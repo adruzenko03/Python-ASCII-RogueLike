@@ -8,7 +8,7 @@ class Application(Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        Label(self, text="*insert game here*").grid(row=0, column=0, sticky=W)
+        Label(self, text=":D").grid(row=0, column=0, sticky=W)
 
 root = Tk()
 root.title("Dungeon Crawler")
