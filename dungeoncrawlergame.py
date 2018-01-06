@@ -26,6 +26,10 @@ class Application(Frame):
 
         Label(self, text="\t\t\t\t\t\t          ", bg="#cc7130").grid(row=1, column=3, columnspan=11)
 
+    def movePlayer(self):
+        # can't do that yet since I need to finish the gui oops
+        print("this line is here so that the code will work")
+
 root = Tk()
 root.title("GOI")
 root.geometry("404x400")
