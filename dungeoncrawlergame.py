@@ -8,9 +8,21 @@ class Application(Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        Canvas(self, bg="#cc7130", width=405, height=315, bd=0, highlightthickness=0).grid(row=0, rowspan=17, column=0, columnspan=4)
+        Canvas(self, bg="#cc7130", width=465, height=350, bd=0, highlightthickness=0).grid(row=0, rowspan=17, column=0, columnspan=4)
 
-        self.playarea = Text(self, width=50, height=13, state=DISABLED)
+        self.playarea = Text(self, width=50, height=13, font="consolas")
+        self.playarea.insert(0.0, "###■########□###\n"
+                                  "#              #\n"
+                                  "#          ◙   #\n"
+                                  "#              #\n"
+                                  "#        Ü     #\n"
+                                  "#              #\n"
+                                  "#              #\n"
+                                  "#              #\n"
+                                  "#              #\n"
+                                  "#              #\n"
+                                  "###■########□###")
+        self.playarea["state"]=DISABLED
         self.playarea.grid(row=0, column=0, columnspan=15)
 
         self.upb = Button(self, text=" ▲ ", bg="#8B4513", activebackground="#633310")
@@ -24,7 +36,8 @@ class Application(Frame):
         self.centerb = Button(self, text=" ▼ ", bg="#8B4513", activebackground="#633310", fg="#8B4513", activeforeground="#633310")
         self.centerb.grid(row=3, column=1)
 
-        Label(self, text="\t\t\t\t\t\t          ", bg="#cc7130").grid(row=1, column=3, columnspan=11)
+        # this is a load-bearing label, please do NOT edit this.
+        Label(self, text="\t\t\t\t\t\t\t              ", bg="#cc7130").grid(row=1, column=3, columnspan=11)
 
     def movePlayer(self):
         # can't do that yet since I need to finish the gui oops
@@ -32,7 +45,7 @@ class Application(Frame):
 
 root = Tk()
 root.title("GOI")
-root.geometry("404x400")
+root.geometry("465x400")
 root.configure(bg="#cc7130")
 
 app = Application(root)
