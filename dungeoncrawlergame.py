@@ -37,17 +37,20 @@ class Application(Frame):
 
     def print_screen(self):
 
+        # Edit this number for the room
+        cr = 0
+
         s = ""
         r = load_room_file("testroom.txt")
 
-        self.spawn_character(r[0])
+        self.spawn_character(r[cr])
 
         h = ""
-        for x in range(1, r[0].xl+3):
+        for x in range(1, r[cr].xl+3):
             h += "#"
 
         s += h + "\n"
-        for a in r[0].layout:
+        for a in r[cr].layout:
             s += "#"
             for b in a:
                 s += b
