@@ -11,7 +11,7 @@ class Application(Frame):
     def create_widgets(self):
         Canvas(self, bg="#cc7130", width=465, height=337, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=4, rowspan=5)
 
-        self.playarea = Text(self, width=50, height=13, font="Consolas 15 bold")
+        self.playarea = Text(self, width=50, height=13, font="consolas 12 bold")
         self.playarea["state"]=DISABLED
         self.print_screen()
         self.playarea.grid(row=0, column=0, columnspan=4)
