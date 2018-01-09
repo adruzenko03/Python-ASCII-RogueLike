@@ -1,6 +1,6 @@
 from tkinter import *
 from roomcreator import *
-
+from random import *
 class Application(Frame):
 
     def __init__(self, master):
@@ -54,6 +54,7 @@ class Application(Frame):
         self.playarea["state"] = NORMAL
         self.playarea.insert(0.0, s)
         self.playarea["state"] = DISABLED
+    def spawn_character(self):
 
 
 root = Tk()
