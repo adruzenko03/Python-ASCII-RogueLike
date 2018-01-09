@@ -18,8 +18,8 @@ basicRoom01
        #       |
 ---
 basicRoom02
-9
-9
+15
+15
                |
                |
                |
