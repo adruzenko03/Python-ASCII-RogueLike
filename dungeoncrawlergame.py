@@ -40,11 +40,11 @@ class Application(Frame):
         r = load_room_file_v2("testroom.txt")
 
         h = ""
-        for x in range(1, r[2].xl+3):
+        for x in range(1, r[0].xl+3):
             h += "#"
 
         s += h + "\n"
-        for a in r[2].layout:
+        for a in r[0].layout:
             s += "#"
             for b in a:
                 s += b
