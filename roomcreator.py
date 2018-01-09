@@ -6,21 +6,7 @@ class Room (object):
         self.yl = int(yl)
         self.layout = layout
 
-
 def load_room_file(file):
-
-    tr = open(file, "r")
-
-    lay = []
-    for line in tr:
-        lay.append([])
-        for tile in line:
-            if tile != "\n":
-                lay[-1].append(tile)
-
-    return Room("Test Room", len(lay[0]), len(lay), lay)
-
-def load_room_file_v2(file):
 
     roomfile = open(file, "r")
     roomlist = []

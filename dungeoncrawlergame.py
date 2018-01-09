@@ -1,5 +1,6 @@
 from tkinter import *
 from roomcreator import *
+from random import *
 
 class Application(Frame):
 
@@ -37,7 +38,9 @@ class Application(Frame):
     def print_screen(self):
 
         s = ""
-        r = load_room_file_v2("testroom.txt")
+        r = load_room_file("testroom.txt")
+
+        self.spawn_character(r[0])
 
         h = ""
         for x in range(1, r[0].xl+3):
@@ -55,6 +58,14 @@ class Application(Frame):
         self.playarea.insert(0.0, s)
         self.playarea["state"] = DISABLED
 
+    def spawn_character(self, room):
+
+        while 1==1:
+            xc = randint(0, room.xl-1)
+            yc = randint(0, room.yl-1)
+            if room.layout[xc][yc] == " ":
+                room.layout[xc][yc] = "Ü"
+                return room
 
 root = Tk()
 root.title("GOI")

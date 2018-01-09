@@ -49,4 +49,13 @@ basicRoom03
                |
                |
 ---
+smileyPlacementTest
+5
+5
+#####|
+###  |
+###  |
+###  |
+#####|
+---
 STOP
