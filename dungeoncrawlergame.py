@@ -55,7 +55,7 @@ class Application(Frame):
         self.playarea.insert(0.0, s)
         self.playarea["state"] = DISABLED
     def spawn_character(self):
-        x = 1
+        y = 1
 
 root = Tk()
 root.title("GOI")
