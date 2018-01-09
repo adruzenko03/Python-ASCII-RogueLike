@@ -37,7 +37,7 @@ class Application(Frame):
 
     def print_screen(self):
 
-        # Edit this number for the room
+        # Just edit this number for the room
         cr = 0
 
         s = ""
