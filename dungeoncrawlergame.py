@@ -1,4 +1,5 @@
 from tkinter import *
+from roomcreator import *
 
 class Application(Frame):
 
@@ -8,21 +9,11 @@ class Application(Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        Canvas(self, bg="#cc7130", width=465, height=350, bd=0, highlightthickness=0).grid(row=0, rowspan=17, column=0, columnspan=4)
+        Canvas(self, bg="#cc7130", width=465, height=337, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=4, rowspan=5)
 
         self.playarea = Text(self, width=50, height=13, font="consolas")
-        self.playarea.insert(0.0, "###■########□###\n"
-                                  "#              #\n"
-                                  "#          ◙   #\n"
-                                  "#              #\n"
-                                  "#        Ü     #\n"
-                                  "#              #\n"
-                                  "#              #\n"
-                                  "#              #\n"
-                                  "#              #\n"
-                                  "#              #\n"
-                                  "###■########□###")
         self.playarea["state"]=DISABLED
+        self.print_screen()
         self.playarea.grid(row=0, column=0, columnspan=4)
 
         self.upb = Button(self, text=" ▲ ", bg="#8B4513", activebackground="#633310")
@@ -39,9 +30,31 @@ class Application(Frame):
         # this is a load-bearing label, please do NOT edit this.
         Label(self, text="", bg="#cc7130", width=52).grid(row=3, column=3)
 
-    def movePlayer(self):
+    def move_player(self):
         # can't do that yet since I need to finish the gui oops
         print("this line is here so that the code will work")
+
+    def print_screen(self):
+
+        s = ""
+        r = load_room_file_v2("testroom.txt")
+
+        h = ""
+        for x in range(1, r[2].xl+3):
+            h += "#"
+
+        s += h + "\n"
+        for a in r[2].layout:
+            s += "#"
+            for b in a:
+                s += b
+            s += "#\n"
+        s += h
+
+        self.playarea["state"] = NORMAL
+        self.playarea.insert(0.0, s)
+        self.playarea["state"] = DISABLED
+
 
 root = Tk()
 root.title("GOI")
