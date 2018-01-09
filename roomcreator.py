@@ -11,7 +11,6 @@ def load_room_file(file):
     roomfile = open(file, "r")
     roomlist = []
     linelist = []
-    temproomformat = []
 
     for line in roomfile:
         linelist.append(line)
