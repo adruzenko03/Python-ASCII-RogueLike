@@ -61,6 +61,5 @@ root = Tk()
 root.title("GOI")
 root.geometry("465x400")
 root.configure(bg="#cc7130")
-
 app = Application(root)
 root.mainloop()
