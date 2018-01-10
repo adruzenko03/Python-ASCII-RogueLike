@@ -55,7 +55,6 @@ basicRoom03
                |
                |
 ---
-
 DRoom01
 15
 15
@@ -75,7 +74,6 @@ DRoom01
                |
                |
 ---
-
 smileyPlacementTest
 5
 5
