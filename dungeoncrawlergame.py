@@ -45,7 +45,7 @@ class Application(Frame):
 
         self.spawn_character(r[cr])
 
-        g = ""
+        h = ""
         for x in range(1, r[cr].xl+3):
             h += "#"
 
