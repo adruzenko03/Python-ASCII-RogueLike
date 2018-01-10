@@ -38,7 +38,7 @@ class Application(Frame):
     def print_screen(self):
 
         # Just edit this number for the room
-        cr = 2
+        cr = randint(0, 2)
 
         s = ""
         r = load_room_file("testroom.txt")
