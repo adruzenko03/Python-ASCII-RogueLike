@@ -55,7 +55,7 @@ basicRoom03
                |
                |
 ---
-basicRoom04
+DRoom01
 15
 15
                |
