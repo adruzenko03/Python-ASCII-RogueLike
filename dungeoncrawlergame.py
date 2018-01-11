@@ -9,7 +9,6 @@ class Application(Frame):
         self.grid()
         self.create_widgets()
 
-
     def create_widgets(self):
         Canvas(self, bg="#cc7130", width=465, height=337, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=4, rowspan=5)
 
@@ -18,52 +17,73 @@ class Application(Frame):
         self.print_screen()
         self.playarea.grid(row=0, column=0, columnspan=4)
 
-        self.upb = Button(self, text=" ▲ ", bg="#8B4513", activebackground="#633310", command = self.move_up(self.current_room))
+        self.upb = Button(self, text=" ▲ ", bg="#8B4513", activebackground="#633310", command=lambda: self.move_player("up"))
         self.upb.grid(row=2, column=1)
-        self.leftb = Button(self, text=" ◀ ", bg="#8B4513", activebackground="#633310", command = self.move_left(self.current_room))
+        self.leftb = Button(self, text=" ◀ ", bg="#8B4513", activebackground="#633310", command=lambda: self.move_player("left"))
         self.leftb.grid(row=3, column=0, sticky=E)
-        self.rightb = Button(self, text=" ▶ ", bg="#8B4513", activebackground="#633310", command = self.move_right(self.current_room))
+        self.rightb = Button(self, text=" ▶ ", bg="#8B4513", activebackground="#633310", command=lambda: self.move_player("right"))
         self.rightb.grid(row=3, column=2, sticky=W)
-        self.downb = Button(self, text=" ▼ ", bg="#8B4513", activebackground="#633310", command = self.move_down(self.current_room))
+        self.downb = Button(self, text=" ▼ ", bg="#8B4513", activebackground="#633310", command=lambda: self.move_player("down"))
         self.downb.grid(row=4, column=1)
         self.centerb = Button(self, text=" ▼ ", bg="#8B4513", activebackground="#633310", fg="#8B4513", activeforeground="#633310")
         self.centerb.grid(row=3, column=1)
 
         # this is a load-bearing label, please do NOT edit this.
         Label(self, text="", bg="#cc7130", width=52).grid(row=3, column=3)
-    def move_up(self, room):
-        if room.layout[self.xc][self.yc+1] == " ":
-            room.layout[self.xc][self.yc] = " "
-            self.yc += 1
-            room.layout[self.xc][self.yc] = "Ü"
-    def move_down(self,room):
-        if room.layout[self.xc][self.yc] == " ":
-            room.layout[self.xc][self.yc] = " "
-            self.yc -= 1
-            room.layout[self.xc][self.yc] = "Ü"
-    def move_left(self,room):
-        if room.layout[self.xc][self.yc] == " ":
-            room.layout[self.xc][self.yc] = " "
-            self.xc += 1
-            room.layout[self.xc][self.yc] = "Ü"
-    def move_right(self,room):
-        if room.layout[self.xc][self.yc] == " ":
-            room.layout[self.xc][self.yc] = " "
-            self.xc -= 1
-            room.layout[self.xc][self.yc] = "Ü"
-    def move_player(self):
-        # can't do that yet since I need to finish the gui oops
-        print("this line is here so that the code will work")
+
+    def move_player(self, direction):
+
+        s = ""
+
+        if direction == "up":
+
+            if self.floor[self.player_x - 1][self.player_y] == " ":
+
+                self.floor[self.player_x - 1][self.player_y] = "Ü"
+                self.floor[self.player_x][self.player_y] = " "
+                self.player_x -= 1
+
+        if direction == "down":
+
+            if self.floor[self.player_x + 1][self.player_y] == " ":
+                self.floor[self.player_x + 1][self.player_y] = "Ü"
+                self.floor[self.player_x][self.player_y] = " "
+                self.player_x += 1
+
+        if direction == "left":
+
+            if self.floor[self.player_x][self.player_y - 1] == " ":
+                self.floor[self.player_x][self.player_y - 1] = "Ü"
+                self.floor[self.player_x][self.player_y] = " "
+                self.player_y -= 1
+
+        if direction == "right":
+
+            if self.floor[self.player_x][self.player_y + 1] == " ":
+                self.floor[self.player_x][self.player_y + 1] = "Ü"
+                self.floor[self.player_x][self.player_y] = " "
+                self.player_y += 1
+
+        for a in self.floor:
+            for b in a:
+                s += b
+            s += "\n"
+
+        self.playarea["state"] = NORMAL
+        self.playarea.delete(0.0, END)
+        self.playarea.insert(0.0, s)
+        self.playarea["state"] = DISABLED
+
 
     def print_screen(self):
 
         # Just edit this number for the room
-        cr = randint(0, 2)
+        cr = randint(0, 4)
 
         s = ""
         r = load_room_file("testroom.txt")
-        self.current_room = r[cr]
-        self.spawn_character(self.current_room)
+
+        self.spawn_character(r[cr])
 
         h = ""
         for x in range(1, r[cr].xl+3):
@@ -77,17 +97,34 @@ class Application(Frame):
             s += "#\n"
         s += h
 
+        i = ""
+
+        self.floor = [[]]
+        for tile in s:
+            if tile == "\n":
+                self.floor.append([])
+            elif tile != "n":
+                self.floor[-1].append(tile)
+            if tile == "Ü":
+                self.player_x = len(self.floor)-1
+                self.player_y = len(self.floor[-1])-1
+
+        for a in self.floor:
+            for b in a:
+                i += b
+            i += "\n"
+
         self.playarea["state"] = NORMAL
-        self.playarea.insert(0.0, s)
+        self.playarea.insert(0.0, i)
         self.playarea["state"] = DISABLED
 
     def spawn_character(self, room):
 
         while 1==1:
-            self.xc = randint(0, room.xl-1)
-            self.yc = randint(0, room.yl-1)
-            if room.layout[self.xc][self.yc] == " ":
-                room.layout[self.xc][self.yc] = "Ü"
+            xc = randint(0, room.xl-1)
+            yc = randint(0, room.yl-1)
+            if room.layout[xc][yc] == " ":
+                room.layout[xc][yc] = "Ü"
                 return room
 
 root = Tk()
