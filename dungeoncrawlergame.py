@@ -10,7 +10,7 @@ class Application(Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        Canvas(self, bg="#cc7130", width=600, height=415, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=5, rowspan=5)
+        Canvas(self, bg="#cc7130", width=460, height=560, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=5, rowspan=6)
 
         self.playarea = Text(self, width=50, height=13, font="consolas 12 bold")
         self.playarea["state"]=DISABLED
@@ -27,11 +27,13 @@ class Application(Frame):
         self.downb.grid(row=4, column=1)
         self.centerb = Button(self, text=" ▼ ", bg="#8B4513", activebackground="#633310", fg="#8B4513", activeforeground="#633310")
         self.centerb.grid(row=3, column=1)
-        self.message_leg = Text(self, width=15, height=15, wrap=WORD).grid(row=2, column=4, rowspan=4, sticky=W)
+        self.message_log = Text(self, width=25, height=15, wrap=WORD)
+        self.message_log.grid(row=2, column=4, rowspan=4, sticky=N)
 
         # these are load-bearing labels, please do NOT edit these.
-        Label(self, text="", bg="#cc7130", width=5).grid(row=3, column=3)
-        Label(self, text="", bg="#cc7130", height=3).grid(row=5, column=0)
+        Label(self, text="", bg="#cc7130", height=1).grid(row=1, column=1)
+        Label(self, text="", bg="#cc7130", width=20).grid(row=3, column=3)
+        Label(self, text="", bg="#cc7130", height=12).grid(row=5, column=0)
 
     def move_player(self, direction):
 
@@ -80,7 +82,7 @@ class Application(Frame):
     def print_screen(self):
 
         # Just edit this number for the room
-        cr = randint(0, 4)
+        cr = randint(0, 5)
 
         s = ""
         r = load_room_file("testroom.txt")
@@ -89,14 +91,17 @@ class Application(Frame):
 
         h = ""
         for x in range(1, r[cr].xl+3):
-            h += "#"
+            h += "█"
 
         s += h + "\n"
         for a in r[cr].layout:
-            s += "#"
+            s += "█"
             for b in a:
-                s += b
-            s += "#\n"
+                if b == "#":
+                    s += "█"
+                else:
+                    s += b
+            s += "█\n"
         s += h
 
         i = ""
@@ -131,7 +136,7 @@ class Application(Frame):
 
 root = Tk()
 root.title("GOI")
-root.geometry("465x400")
+root.geometry("465x550")
 root.configure(bg="#cc7130")
 
 app = Application(root)
