@@ -35,6 +35,7 @@ class Application(Frame):
         Label(self, text="", bg="#cc7130", width=20).grid(row=3, column=3)
         Label(self, text="", bg="#cc7130", height=12).grid(row=5, column=0)
     def message_leg(self, direction):
+
         if direction == "up":
             self.message_log.insert(0.0, "You moved up\n")
         if direction == "left":
