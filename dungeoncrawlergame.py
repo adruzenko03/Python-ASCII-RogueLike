@@ -37,6 +37,12 @@ class Application(Frame):
     def message_leg(self, direction):
         if direction == "up":
             self.message_log.insert(0.0, "You moved up\n")
+        if direction == "left":
+            self.message_log.insert(0.0, "You moved left\n")
+        if direction == "right":
+            self.message_log.insert(0.0, "You moved down\n")
+        if direction == "down":
+            self.message_log.insert(0.0, "You moved right\n")
     def move_player(self, direction):
 
         s = ""
@@ -56,21 +62,21 @@ class Application(Frame):
                 self.floor[self.player_x + 1][self.player_y] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_x += 1
-
+                self.message_leg("down")
         if direction == "left":
 
             if self.floor[self.player_x][self.player_y - 1] == " ":
                 self.floor[self.player_x][self.player_y - 1] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_y -= 1
-
+                self.message_leg("left")
         if direction == "right":
 
             if self.floor[self.player_x][self.player_y + 1] == " ":
                 self.floor[self.player_x][self.player_y + 1] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_y += 1
-
+                self.message_leg("right")
         for a in self.floor:
             for b in a:
                 s += b
@@ -83,6 +89,7 @@ class Application(Frame):
 
 
     def print_screen(self):
+
 
         # Just edit this number for the room
         cr = randint(0, 5)
@@ -123,6 +130,7 @@ class Application(Frame):
             for b in a:
                 i += b
             i += "\n"
+
 
         self.playarea["state"] = NORMAL
         self.playarea.insert(0.0, i)
