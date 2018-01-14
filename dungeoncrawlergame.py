@@ -98,7 +98,7 @@ class Application(Frame):
     def assemble_rooms(self):
 
         roomfile = load_room_file("testroom.txt")
-        base = [roomfile[randint(0, 10)], 0, 0]
+        base = [roomfile[randint(0, 11)], 0, 0]
 
         roomgrid = [base]
 
@@ -115,28 +115,28 @@ class Application(Frame):
                     if selectedroom[1] == x[1] and selectedroom[2]-1 == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 5)], selectedroom[1], selectedroom[2] - 1])
+                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1], selectedroom[2] - 1])
 
             if direction == 2:
                 for x in roomgrid:
                     if selectedroom[1] == x[1] and selectedroom[2]+1 == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 5)], selectedroom[1], selectedroom[2]+1])
+                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1], selectedroom[2]+1])
 
             if direction == 3:
                 for x in roomgrid:
                     if selectedroom[1]-1 == x[1] and selectedroom[2] == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 5)], selectedroom[1]-1, selectedroom[2]])
+                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1]-1, selectedroom[2]])
 
             if direction == 4:
                 for x in roomgrid:
                     if selectedroom[1]+1 == x[1] and selectedroom[2] == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 5)], selectedroom[1]+1, selectedroom[2]])
+                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1]+1, selectedroom[2]])
 
             if condition == True:
                 maxrooms -= 1
