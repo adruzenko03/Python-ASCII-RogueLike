@@ -35,6 +35,17 @@ class Application(Frame):
         Label(self, text="", bg="#cc7130", width=20).grid(row=3, column=3)
         Label(self, text="", bg="#cc7130", height=12).grid(row=5, column=0)
 
+    def message_leg(self, direction):
+
+        if direction == "up":
+            self.message_log.insert(0.0, "You moved up\n")
+        if direction == "left":
+            self.message_log.insert(0.0, "You moved left\n")
+        if direction == "right":
+            self.message_log.insert(0.0, "You moved right\n")
+        if direction == "down":
+            self.message_log.insert(0.0, "You moved down\n")
+
     def move_player(self, direction):
 
         s = ""
@@ -46,6 +57,7 @@ class Application(Frame):
                 self.floor[self.player_x - 1][self.player_y] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_x -= 1
+                self.message_leg("up")
 
         if direction == "down":
 
@@ -53,6 +65,7 @@ class Application(Frame):
                 self.floor[self.player_x + 1][self.player_y] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_x += 1
+                self.message_leg("down")
 
         if direction == "left":
 
@@ -60,6 +73,7 @@ class Application(Frame):
                 self.floor[self.player_x][self.player_y - 1] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_y -= 1
+                self.message_leg("left")
 
         if direction == "right":
 
@@ -67,6 +81,7 @@ class Application(Frame):
                 self.floor[self.player_x][self.player_y + 1] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_y += 1
+                self.message_leg("right")
 
         for a in self.floor:
             for b in a:
