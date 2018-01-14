@@ -12,9 +12,9 @@ class Application(Frame):
     def create_widgets(self):
         Canvas(self, bg="#cc7130", width=460, height=560, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=5, rowspan=6)
 
-        self.playarea = Text(self, width=50, height=13, font="consolas 12 bold")
+        self.playarea = Text(self, width=49, height=13, font="consolas 12 bold")
         self.playarea["state"]=DISABLED
-        self.print_screen()
+        self.assemble_rooms()
         self.playarea.grid(row=0, column=0, columnspan=5)
 
         self.upb = Button(self, text=" ▲ ", bg="#8B4513", activebackground="#633310", command=lambda: self.move_player("up"))
@@ -73,66 +73,234 @@ class Application(Frame):
                 s += b
             s += "\n"
 
-        self.playarea["state"] = NORMAL
+        self.print_screen()
+
+        """ self.playarea["state"] = NORMAL
         self.playarea.delete(0.0, END)
         self.playarea.insert(0.0, s)
-        self.playarea["state"] = DISABLED
+        self.playarea["state"] = DISABLED """
 
+    def assemble_rooms(self):
 
-    def print_screen(self):
+        roomfile = load_room_file("testroom.txt")
+        base = [roomfile[randint(0, 5)], 0, 0]
 
-        # Just edit this number for the room
-        cr = randint(0, 5)
+        roomgrid = [base]
+
+        maxrooms = 8
+
+        while maxrooms > 0:
+
+            condition = True
+            selectedroom = choice(roomgrid)
+            direction = randint(1, 4)
+
+            if direction == 1:
+                for x in roomgrid:
+                    if selectedroom[1] == x[1] and selectedroom[2]-1 == x[2]:
+                        condition = False
+                if condition == True:
+                    roomgrid.append([roomfile[randint(0, 5)], selectedroom[1], selectedroom[2] - 1])
+
+            if direction == 2:
+                for x in roomgrid:
+                    if selectedroom[1] == x[1] and selectedroom[2]+1 == x[2]:
+                        condition = False
+                if condition == True:
+                    roomgrid.append([roomfile[randint(0, 5)], selectedroom[1], selectedroom[2]+1])
+
+            if direction == 3:
+                for x in roomgrid:
+                    if selectedroom[1]-1 == x[1] and selectedroom[2] == x[2]:
+                        condition = False
+                if condition == True:
+                    roomgrid.append([roomfile[randint(0, 5)], selectedroom[1]-1, selectedroom[2]])
+
+            if direction == 4:
+                for x in roomgrid:
+                    if selectedroom[1]+1 == x[1] and selectedroom[2] == x[2]:
+                        condition = False
+                if condition == True:
+                    roomgrid.append([roomfile[randint(0, 5)], selectedroom[1]+1, selectedroom[2]])
+
+            if condition == True:
+                maxrooms -= 1
+
+        lowx = 0
+        lowy = 0
+        maxx = 0
+        maxy = 0
+
+        for x in roomgrid:
+            if x[1] < 0 and x[1] < lowx:
+                lowx = x[1]
+            if x[2] < 0 and x[2] < lowy:
+                lowy = x[2]
+            if x[1] > 0 and x[1] > maxx:
+                maxx = x[1]
+            if x[2] > 0 and x[2] > maxy:
+                maxy = x[2]
+
+        maxx -= lowx
+        maxy -= lowy
+        for x in roomgrid:
+            x[1] -= lowx
+            x[2] -= lowy
 
         s = ""
-        r = load_room_file("testroom.txt")
+        for x in range(0, ((maxx+1)*15)+maxx+2):
+            s += "#"
+        s += "\n"
 
-        self.spawn_character(r[cr])
+        templist = []
 
-        h = ""
-        for x in range(1, r[cr].xl+3):
-            h += "█"
-
-        s += h + "\n"
-        for a in r[cr].layout:
-            s += "█"
-            for b in a:
-                if b == "#":
-                    s += "█"
+        for a in range(0, maxy+1):
+            for b in range(0, maxx+1):
+                con = False
+                for c in roomgrid:
+                    if c[1] == b and c[2] == a:
+                        con = True
+                        break
+                if con == True:
+                    templist.append(c)
                 else:
-                    s += b
-            s += "█\n"
-        s += h
+                    templist.append("blank")
+            for d in range(0, 15):
+                s += "#"
+                for e in templist:
+                    if e == "blank":
+                        s += "###############"
+                    else:
+                        for f in range(0, 15):
+                            s += e[0].layout[d][f]
+                    s += "#"
+                s += "\n"
+            for x in range(0, ((maxx + 1) * 15) + maxx + 2):
+                s += "#"
+            s += "\n"
+            templist = []
+
+        print(s)
 
         i = ""
 
         self.floor = [[]]
-        for tile in s:
-            if tile == "\n":
+        for t in range(0, len(s)):
+            if s[t] == "\n":
                 self.floor.append([])
-            elif tile != "n":
-                self.floor[-1].append(tile)
-            if tile == "Ü":
+            elif s[t] != "#":
+                self.floor[-1].append(s[t])
+            else:
+                self.floor[-1].append("█")
+            if t == "Ü":
                 self.player_x = len(self.floor)-1
                 self.player_y = len(self.floor[-1])-1
+
+        self.spawn_character(self.floor, len(self.floor), len(self.floor[0]))
 
         for a in self.floor:
             for b in a:
                 i += b
             i += "\n"
 
+        self.print_screen()
+
+
+    def print_screen(self):
+
+        s = ""
+
+        """ for a in range(0, len(self.floor)-1):
+            if len(self.floor[0]) < 50:
+                for b in self.floor[a]:
+                    s += b[a]
+            elif self.player_x < 25:
+                for b in range(0, 49):
+                    s += self.floor[a][b]
+            elif self.player_x > len(self.floor)-24:
+                for b in range(len(self.floor)-49, len(self.floor)):
+                    s += self.floor[a][b]
+            else:
+                for b in range(self.player_x-24, self.player_x+25):
+                    s += self.floor[a][b] """
+
+        if self.player_x <= 7:
+            for a in range(0, 13):
+                if len(self.floor[0]) <= 49:
+                    for b in self.floor[a]:
+                        s += b
+                    s += "\n"
+                elif self.player_y <= 25:
+                    for b in range(0, 49):
+                        s += self.floor[a][b]
+                    s += "\n"
+                elif self.player_y >= len(self.floor[0])-25:
+                    for b in range(len(self.floor[0])-49, len(self.floor[0])):
+                        s += self.floor[a][b]
+                    s += "\n"
+                else:
+                    for b in range(self.player_y-24, self.player_y+25):
+                        s += self.floor[a][b]
+                    s += "\n"
+
+                """ for b in self.floor[a]:
+                    s += b
+                s += "\n" """
+
+        elif self.player_x >= len(self.floor)-7:
+            for a in range(len(self.floor)-13, len(self.floor)-1):
+                if len(self.floor[0]) <= 49:
+                    for b in self.floor[a]:
+                        s += b
+                    s += "\n"
+                elif self.player_y <= 25:
+                    for b in range(0, 49):
+                        s += self.floor[a][b]
+                    s += "\n"
+                elif self.player_y >= len(self.floor[0])-25:
+                    for b in range(len(self.floor[0])-49, len(self.floor[0])):
+                        s += self.floor[a][b]
+                    s += "\n"
+                else:
+                    for b in range(self.player_y-24, self.player_y+25):
+                        s += self.floor[a][b]
+                    s += "\n"
+
+        else:
+            for a in range(self.player_x-6, self.player_x+7):
+                if len(self.floor[0]) <= 49:
+                    for b in self.floor[a]:
+                        s += b
+                    s += "\n"
+                elif self.player_y <= 25:
+                    for b in range(0, 49):
+                        s += self.floor[a][b]
+                    s += "\n"
+                elif self.player_y >= len(self.floor[0])-25:
+                    for b in range(len(self.floor[0])-49, len(self.floor[0])):
+                        s += self.floor[a][b]
+                    s += "\n"
+                else:
+                    for b in range(self.player_y-24, self.player_y+25):
+                        s += self.floor[a][b]
+                    s += "\n"
+
         self.playarea["state"] = NORMAL
-        self.playarea.insert(0.0, i)
+        self.playarea.delete(0.0, END)
+        self.playarea.insert(0.0, s)
         self.playarea["state"] = DISABLED
 
-    def spawn_character(self, room):
+    def spawn_character(self, room, xl, yl):
 
         while 1==1:
-            xc = randint(0, room.xl-1)
-            yc = randint(0, room.yl-1)
-            if room.layout[xc][yc] == " ":
-                room.layout[xc][yc] = "Ü"
+            xc = randint(0, xl-1)
+            yc = randint(0, yl-1)
+            if room[xc][yc] == " ":
+                room[xc][yc] = "Ü"
+                self.player_x = xc
+                self.player_y = yc
                 return room
+
 
 root = Tk()
 root.title("GOI")
