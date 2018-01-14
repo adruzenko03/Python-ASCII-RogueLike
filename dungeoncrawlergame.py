@@ -98,7 +98,7 @@ class Application(Frame):
     def assemble_rooms(self):
 
         roomfile = load_room_file("testroom.txt")
-        base = [roomfile[randint(0, 5)], 0, 0]
+        base = [roomfile[randint(0, 10)], 0, 0]
 
         roomgrid = [base]
 
