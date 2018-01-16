@@ -106,23 +106,31 @@ class Application(Frame):
 
     def assemble_rooms(self):
 
+        # Loads room file and gets the starting room from that file
         roomfile = load_room_file("testroom.txt")
         base = [roomfile[randint(0, 11)], 0, 0]
 
+        # Adds the start room to the list
         roomgrid = [base]
 
+        # Maximum number of room is that number plus 1
         maxrooms = 8
 
+        # Runs until all the rooms are made
         while maxrooms > 0:
 
+            # Selects a room and a direction
             condition = True
             selectedroom = choice(roomgrid)
             direction = randint(1, 4)
 
+            # Based on the direction, it will place a room in that direction of the selected room
             if direction == 1:
+                # Runs for each room in the list to make sure the room won't overlay another room
                 for x in roomgrid:
                     if selectedroom[1] == x[1] and selectedroom[2]-1 == x[2]:
                         condition = False
+                # If there isn't a room there, it makes a room there
                 if condition == True:
                     roomgrid.append([roomfile[randint(0, 11)], selectedroom[1], selectedroom[2] - 1])
 
@@ -150,11 +158,13 @@ class Application(Frame):
             if condition == True:
                 maxrooms -= 1
 
+        # Creates the lowest number for the coordinates and the maximum number for the coordinates
         lowx = 0
         lowy = 0
         maxx = 0
         maxy = 0
 
+        # Finds if any rooms are negative
         for x in roomgrid:
             if x[1] < 0 and x[1] < lowx:
                 lowx = x[1]
@@ -165,12 +175,14 @@ class Application(Frame):
             if x[2] > 0 and x[2] > maxy:
                 maxy = x[2]
 
+        # Adjusts the max to fit the negative numbers
         maxx -= lowx
         maxy -= lowy
         for x in roomgrid:
             x[1] -= lowx
             x[2] -= lowy
 
+        # Creates the top row of blocks
         s = ""
         for x in range(0, ((maxx+1)*15)+maxx+2):
             s += "#"
@@ -178,22 +190,31 @@ class Application(Frame):
 
         templist = []
 
+        # Runs for each line
         for a in range(0, maxy+1):
+            # Runs for each thing in the line
             for b in range(0, maxx+1):
+                # Finds if there is a room
                 con = False
                 for c in roomgrid:
                     if c[1] == b and c[2] == a:
                         con = True
                         break
+                # Adds room
                 if con == True:
                     templist.append(c)
+                # Adds a blank
                 else:
                     templist.append("blank")
+            # Starts assembling rooms
             for d in range(0, 15):
                 s += "#"
+                # Runs for each thing in the list
                 for e in templist:
+                    # Adds a row of blanks if there is no room
                     if e == "blank":
                         s += "###############"
+                    # Adds a row for the room
                     else:
                         for f in range(0, 15):
                             s += e[0].layout[d][f]
@@ -294,6 +315,8 @@ class Application(Frame):
                     for b in range(self.player_y-24, self.player_y+25):
                         s += self.floor[a][b]
                     s += "\n"
+
+        s = s[:-1]
 
         self.playarea["state"] = NORMAL
         self.playarea.delete(0.0, END)
