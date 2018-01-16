@@ -10,13 +10,17 @@ class Application(Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        Canvas(self, bg="#cc7130", width=460, height=560, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=5, rowspan=6)
 
+        # Background
+        Canvas(self, bg="#cc7130", width=480, height=560, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=6, rowspan=6)
+
+        # Screen
         self.playarea = Text(self, width=49, height=13, font="consolas 12 bold")
         self.playarea["state"]=DISABLED
         self.assemble_rooms()
-        self.playarea.grid(row=0, column=0, columnspan=5)
+        self.playarea.grid(row=0, column=0, columnspan=6)
 
+        # Movement Buttons
         self.upb = Button(self, text=" ▲ ", bg="#8B4513", activebackground="#633310", command=lambda: self.move_player("up"))
         self.upb.grid(row=2, column=1)
         self.leftb = Button(self, text=" ◀ ", bg="#8B4513", activebackground="#633310", command=lambda: self.move_player("left"))
@@ -27,12 +31,17 @@ class Application(Frame):
         self.downb.grid(row=4, column=1)
         self.centerb = Button(self, text=" ▼ ", bg="#8B4513", activebackground="#633310", fg="#8B4513", activeforeground="#633310")
         self.centerb.grid(row=3, column=1)
-        self.message_log = Text(self, width=25, height=15, wrap=WORD)
-        self.message_log.grid(row=2, column=4, rowspan=4, sticky=N)
 
-        # these are load-bearing labels, please do NOT edit these.
+        # Message Log
+        self.message_log_sb = Scrollbar(self)
+        self.message_log_sb.grid(row=2, column=5, rowspan=4, sticky=NS)
+        self.message_log = Text(self, width=25, height=17, wrap=WORD, yscrollcommand=self.message_log_sb.set)
+        self.message_log.grid(row=2, column=4, rowspan=4)
+        self.message_log_sb["command"] = self.message_log.yview
+
+        # Load-Bearing Labels (Do not edit)
         Label(self, text="", bg="#cc7130", height=1).grid(row=1, column=1)
-        Label(self, text="", bg="#cc7130", width=20).grid(row=3, column=3)
+        Label(self, text="", bg="#cc7130", width=18).grid(row=3, column=3)
         Label(self, text="", bg="#cc7130", height=12).grid(row=5, column=0)
 
     def message_leg(self, direction):
@@ -97,55 +106,65 @@ class Application(Frame):
 
     def assemble_rooms(self):
 
+        # Loads room file and gets the starting room from that file
         roomfile = load_room_file("testroom.txt")
-        base = [roomfile[randint(0, 10)], 0, 0]
+        base = [roomfile[randint(0, 11)], 0, 0]
 
+        # Adds the start room to the list
         roomgrid = [base]
 
+        # Maximum number of room is that number plus 1
         maxrooms = 8
 
+        # Runs until all the rooms are made
         while maxrooms > 0:
 
+            # Selects a room and a direction
             condition = True
             selectedroom = choice(roomgrid)
             direction = randint(1, 4)
 
+            # Based on the direction, it will place a room in that direction of the selected room
             if direction == 1:
+                # Runs for each room in the list to make sure the room won't overlay another room
                 for x in roomgrid:
                     if selectedroom[1] == x[1] and selectedroom[2]-1 == x[2]:
                         condition = False
+                # If there isn't a room there, it makes a room there
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 5)], selectedroom[1], selectedroom[2] - 1])
+                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1], selectedroom[2] - 1])
 
             if direction == 2:
                 for x in roomgrid:
                     if selectedroom[1] == x[1] and selectedroom[2]+1 == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 5)], selectedroom[1], selectedroom[2]+1])
+                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1], selectedroom[2]+1])
 
             if direction == 3:
                 for x in roomgrid:
                     if selectedroom[1]-1 == x[1] and selectedroom[2] == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 5)], selectedroom[1]-1, selectedroom[2]])
+                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1]-1, selectedroom[2]])
 
             if direction == 4:
                 for x in roomgrid:
                     if selectedroom[1]+1 == x[1] and selectedroom[2] == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 5)], selectedroom[1]+1, selectedroom[2]])
+                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1]+1, selectedroom[2]])
 
             if condition == True:
                 maxrooms -= 1
 
+        # Creates the lowest number for the coordinates and the maximum number for the coordinates
         lowx = 0
         lowy = 0
         maxx = 0
         maxy = 0
 
+        # Finds if any rooms are negative
         for x in roomgrid:
             if x[1] < 0 and x[1] < lowx:
                 lowx = x[1]
@@ -156,12 +175,14 @@ class Application(Frame):
             if x[2] > 0 and x[2] > maxy:
                 maxy = x[2]
 
+        # Adjusts the max to fit the negative numbers
         maxx -= lowx
         maxy -= lowy
         for x in roomgrid:
             x[1] -= lowx
             x[2] -= lowy
 
+        # Creates the top row of blocks
         s = ""
         for x in range(0, ((maxx+1)*15)+maxx+2):
             s += "#"
@@ -169,22 +190,31 @@ class Application(Frame):
 
         templist = []
 
+        # Runs for each line
         for a in range(0, maxy+1):
+            # Runs for each thing in the line
             for b in range(0, maxx+1):
+                # Finds if there is a room
                 con = False
                 for c in roomgrid:
                     if c[1] == b and c[2] == a:
                         con = True
                         break
+                # Adds room
                 if con == True:
                     templist.append(c)
+                # Adds a blank
                 else:
                     templist.append("blank")
+            # Starts assembling rooms
             for d in range(0, 15):
                 s += "#"
+                # Runs for each thing in the list
                 for e in templist:
+                    # Adds a row of blanks if there is no room
                     if e == "blank":
                         s += "###############"
+                    # Adds a row for the room
                     else:
                         for f in range(0, 15):
                             s += e[0].layout[d][f]
@@ -224,20 +254,6 @@ class Application(Frame):
     def print_screen(self):
 
         s = ""
-
-        """ for a in range(0, len(self.floor)-1):
-            if len(self.floor[0]) < 50:
-                for b in self.floor[a]:
-                    s += b[a]
-            elif self.player_x < 25:
-                for b in range(0, 49):
-                    s += self.floor[a][b]
-            elif self.player_x > len(self.floor)-24:
-                for b in range(len(self.floor)-49, len(self.floor)):
-                    s += self.floor[a][b]
-            else:
-                for b in range(self.player_x-24, self.player_x+25):
-                    s += self.floor[a][b] """
 
         if self.player_x <= 7:
             for a in range(0, 13):
@@ -300,6 +316,8 @@ class Application(Frame):
                         s += self.floor[a][b]
                     s += "\n"
 
+        s = s[:-1]
+
         self.playarea["state"] = NORMAL
         self.playarea.delete(0.0, END)
         self.playarea.insert(0.0, s)
@@ -319,7 +337,7 @@ class Application(Frame):
 
 root = Tk()
 root.title("GOI")
-root.geometry("465x550")
+root.geometry("485x568")
 root.configure(bg="#cc7130")
 
 app = Application(root)
