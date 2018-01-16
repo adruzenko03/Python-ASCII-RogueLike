@@ -10,13 +10,17 @@ class Application(Frame):
         self.create_widgets()
 
     def create_widgets(self):
+
+        # Background
         Canvas(self, bg="#cc7130", width=480, height=560, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=6, rowspan=6)
 
+        # Screen
         self.playarea = Text(self, width=49, height=13, font="consolas 12 bold")
         self.playarea["state"]=DISABLED
         self.assemble_rooms()
         self.playarea.grid(row=0, column=0, columnspan=6)
 
+        # Movement Buttons
         self.upb = Button(self, text=" ▲ ", bg="#8B4513", activebackground="#633310", command=lambda: self.move_player("up"))
         self.upb.grid(row=2, column=1)
         self.leftb = Button(self, text=" ◀ ", bg="#8B4513", activebackground="#633310", command=lambda: self.move_player("left"))
@@ -27,13 +31,15 @@ class Application(Frame):
         self.downb.grid(row=4, column=1)
         self.centerb = Button(self, text=" ▼ ", bg="#8B4513", activebackground="#633310", fg="#8B4513", activeforeground="#633310")
         self.centerb.grid(row=3, column=1)
+
+        # Message Log
         self.message_log_sb = Scrollbar(self)
         self.message_log_sb.grid(row=2, column=5, rowspan=4, sticky=NS)
         self.message_log = Text(self, width=25, height=17, wrap=WORD, yscrollcommand=self.message_log_sb.set)
         self.message_log.grid(row=2, column=4, rowspan=4)
         self.message_log_sb["command"] = self.message_log.yview
 
-        # these are load-bearing labels, please do NOT edit these.
+        # Load-Bearing Labels (Do not edit)
         Label(self, text="", bg="#cc7130", height=1).grid(row=1, column=1)
         Label(self, text="", bg="#cc7130", width=18).grid(row=3, column=3)
         Label(self, text="", bg="#cc7130", height=12).grid(row=5, column=0)
@@ -227,20 +233,6 @@ class Application(Frame):
     def print_screen(self):
 
         s = ""
-
-        """ for a in range(0, len(self.floor)-1):
-            if len(self.floor[0]) < 50:
-                for b in self.floor[a]:
-                    s += b[a]
-            elif self.player_x < 25:
-                for b in range(0, 49):
-                    s += self.floor[a][b]
-            elif self.player_x > len(self.floor)-24:
-                for b in range(len(self.floor)-49, len(self.floor)):
-                    s += self.floor[a][b]
-            else:
-                for b in range(self.player_x-24, self.player_x+25):
-                    s += self.floor[a][b] """
 
         if self.player_x <= 7:
             for a in range(0, 13):
