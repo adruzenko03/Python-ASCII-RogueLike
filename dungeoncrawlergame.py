@@ -250,7 +250,6 @@ class Application(Frame):
 
         self.print_screen()
 
-
     def print_screen(self):
 
         s = ""
