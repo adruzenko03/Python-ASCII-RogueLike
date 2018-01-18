@@ -151,29 +151,64 @@ class Application(Frame):
                         condition = False
                 # If there isn't a room there, it makes a room there
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1], selectedroom[2] - 1])
+                    roomgrid.append([roomfile[randint(1, 11)], selectedroom[1], selectedroom[2] - 1])
 
             if direction == 2:
                 for x in roomgrid:
                     if selectedroom[1] == x[1] and selectedroom[2]+1 == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1], selectedroom[2]+1])
+                    roomgrid.append([roomfile[randint(1, 11)], selectedroom[1], selectedroom[2]+1])
 
             if direction == 3:
                 for x in roomgrid:
                     if selectedroom[1]-1 == x[1] and selectedroom[2] == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1]-1, selectedroom[2]])
+                    roomgrid.append([roomfile[randint(1, 11)], selectedroom[1]-1, selectedroom[2]])
 
             if direction == 4:
                 for x in roomgrid:
                     if selectedroom[1]+1 == x[1] and selectedroom[2] == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1]+1, selectedroom[2]])
+                    roomgrid.append([roomfile[randint(1, 11)], selectedroom[1]+1, selectedroom[2]])
+            if maxrooms == 1:
+                # Selects a room and a direction
+                condition = True
+                selectedroom = choice(roomgrid)
+                direction = randint(1, 4)
 
+                # Based on the direction, it will place a room in that direction of the selected room
+                if direction == 1:
+                    # Runs for each room in the list to make sure the room won't overlay another room
+                    for x in roomgrid:
+                        if selectedroom[1] == x[1] and selectedroom[2] - 1 == x[2]:
+                            condition = False
+                    # If there isn't a room there, it makes a room there
+                    if condition == True:
+                        roomgrid.append([roomfile[0], selectedroom[1], selectedroom[2] - 1])
+
+                if direction == 2:
+                    for x in roomgrid:
+                        if selectedroom[1] == x[1] and selectedroom[2] + 1 == x[2]:
+                            condition = False
+                    if condition == True:
+                        roomgrid.append([roomfile[0], selectedroom[1], selectedroom[2] + 1])
+
+                if direction == 3:
+                    for x in roomgrid:
+                        if selectedroom[1] - 1 == x[1] and selectedroom[2] == x[2]:
+                            condition = False
+                    if condition == True:
+                        roomgrid.append([roomfile[0], selectedroom[1] - 1, selectedroom[2]])
+
+                if direction == 4:
+                    for x in roomgrid:
+                        if selectedroom[1] + 1 == x[1] and selectedroom[2] == x[2]:
+                            condition = False
+                    if condition == True:
+                        roomgrid.append([roomfile[0], selectedroom[1] + 1, selectedroom[2]])
             if condition == True:
                 maxrooms -= 1
 
