@@ -62,10 +62,14 @@ class Application(Frame):
         if direction == "up":
 
             if self.floor[self.player_x - 1][self.player_y] == " ":
-
                 self.floor[self.player_x - 1][self.player_y] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_x -= 1
+                self.message_leg("up")
+            elif self.floor[self.player_x - 1][self.player_y] == "□":
+                self.floor[self.player_x - 2][self.player_y] = "Ü"
+                self.floor[self.player_x][self.player_y] = " "
+                self.player_x -= 2
                 self.message_leg("up")
 
         if direction == "down":
@@ -75,6 +79,11 @@ class Application(Frame):
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_x += 1
                 self.message_leg("down")
+            elif self.floor[self.player_x + 1][self.player_y] == "□":
+                self.floor[self.player_x + 2][self.player_y] = "Ü"
+                self.floor[self.player_x][self.player_y] = " "
+                self.player_x += 2
+                self.message_leg("down")
 
         if direction == "left":
 
@@ -83,6 +92,11 @@ class Application(Frame):
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_y -= 1
                 self.message_leg("left")
+            elif self.floor[self.player_x][self.player_y - 1] == "□":
+                self.floor[self.player_x][self.player_y - 2] = "Ü"
+                self.floor[self.player_x][self.player_y] = " "
+                self.player_y -= 2
+                self.message_leg("left")
 
         if direction == "right":
 
@@ -90,6 +104,11 @@ class Application(Frame):
                 self.floor[self.player_x][self.player_y + 1] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_y += 1
+                self.message_leg("right")
+            elif self.floor[self.player_x][self.player_y + 1] == "□":
+                self.floor[self.player_x][self.player_y + 2] = "Ü"
+                self.floor[self.player_x][self.player_y] = " "
+                self.player_y += 2
                 self.message_leg("right")
 
         for a in self.floor:
@@ -132,29 +151,64 @@ class Application(Frame):
                         condition = False
                 # If there isn't a room there, it makes a room there
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1], selectedroom[2] - 1])
+                    roomgrid.append([roomfile[randint(1, 11)], selectedroom[1], selectedroom[2] - 1])
 
             if direction == 2:
                 for x in roomgrid:
                     if selectedroom[1] == x[1] and selectedroom[2]+1 == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1], selectedroom[2]+1])
+                    roomgrid.append([roomfile[randint(1, 11)], selectedroom[1], selectedroom[2]+1])
 
             if direction == 3:
                 for x in roomgrid:
                     if selectedroom[1]-1 == x[1] and selectedroom[2] == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1]-1, selectedroom[2]])
+                    roomgrid.append([roomfile[randint(1, 11)], selectedroom[1]-1, selectedroom[2]])
 
             if direction == 4:
                 for x in roomgrid:
                     if selectedroom[1]+1 == x[1] and selectedroom[2] == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(0, 11)], selectedroom[1]+1, selectedroom[2]])
+                    roomgrid.append([roomfile[randint(1, 11)], selectedroom[1]+1, selectedroom[2]])
+            if maxrooms == 1:
+                # Selects a room and a direction
+                condition = True
+                selectedroom = choice(roomgrid)
+                direction = randint(1, 4)
 
+                # Based on the direction, it will place a room in that direction of the selected room
+                if direction == 1:
+                    # Runs for each room in the list to make sure the room won't overlay another room
+                    for x in roomgrid:
+                        if selectedroom[1] == x[1] and selectedroom[2] - 1 == x[2]:
+                            condition = False
+                    # If there isn't a room there, it makes a room there
+                    if condition == True:
+                        roomgrid.append([roomfile[0], selectedroom[1], selectedroom[2] - 1])
+
+                if direction == 2:
+                    for x in roomgrid:
+                        if selectedroom[1] == x[1] and selectedroom[2] + 1 == x[2]:
+                            condition = False
+                    if condition == True:
+                        roomgrid.append([roomfile[0], selectedroom[1], selectedroom[2] + 1])
+
+                if direction == 3:
+                    for x in roomgrid:
+                        if selectedroom[1] - 1 == x[1] and selectedroom[2] == x[2]:
+                            condition = False
+                    if condition == True:
+                        roomgrid.append([roomfile[0], selectedroom[1] - 1, selectedroom[2]])
+
+                if direction == 4:
+                    for x in roomgrid:
+                        if selectedroom[1] + 1 == x[1] and selectedroom[2] == x[2]:
+                            condition = False
+                    if condition == True:
+                        roomgrid.append([roomfile[0], selectedroom[1] + 1, selectedroom[2]])
             if condition == True:
                 maxrooms -= 1
 
@@ -240,6 +294,21 @@ class Application(Frame):
             if t == "Ü":
                 self.player_x = len(self.floor)-1
                 self.player_y = len(self.floor[-1])-1
+
+        for a in roomgrid:
+            for b in roomgrid:
+                if a[1]+1 == b[1] and a[2] == b[2]:
+                    while 1==1:
+                        dp = randint(0, 14)
+                        if self.floor[16*(a[2])+dp][16*(a[1]+1)+1] == " " and self.floor[16*(a[2])+dp][16*(a[1]+1)-1] == " ":
+                            self.floor[16*(a[2])+dp][16*(a[1]+1)] = "□"
+                            break
+                if a[1] == b[1] and a[2]+1 == b[2]:
+                    while 1==1:
+                        dp = randint(0, 14)
+                        if self.floor[16*(a[2]+1)+1][16*(a[1])+dp] == " " and self.floor[16*(a[2]+1)-1][16*(a[1])+dp] == " ":
+                            self.floor[16*(a[2]+1)][16*(a[1])+dp] = "□"
+                            break
 
         self.spawn_character(self.floor, len(self.floor), len(self.floor[0]))
 
