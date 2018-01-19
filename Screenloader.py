@@ -14,7 +14,7 @@ class Put_Everything_Together(object):
     def main_game(self):
         self.load_title.destroy()
         self.root.title("JESSSSSSSUUUUUUUSSSS")
-        self.game = Mainscreen(self.root, self.end)
+        self.game = Mainscreen(self.root, self.end_game)
 
     def end_game(self):
         self.game.destroy()
