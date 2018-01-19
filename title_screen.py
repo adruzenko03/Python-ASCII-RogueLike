@@ -36,7 +36,7 @@ class TitleScreen(Frame):
     def cont(self):
         self.maingame()
 
-root = Tk()
+# root = Tk()
 # root.title("Title")
 # app = TitleScreen(root)
 # root.mainloop()
