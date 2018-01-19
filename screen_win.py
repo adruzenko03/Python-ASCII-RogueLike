@@ -1,5 +1,5 @@
 from tkinter import *
-class Application(Frame):
+class Winscreen(Frame):
     def __init__(self, master):
         super().__init__(master)
         self.grid()
@@ -37,7 +37,3 @@ class Application(Frame):
         print(" ")
     def exit(self):
         exit()
-root = Tk()
-root.title("Win Screen")
-app = Application(root)
-root.mainloop()
