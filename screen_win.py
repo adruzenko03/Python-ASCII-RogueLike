@@ -5,38 +5,33 @@ class Application(Frame):
         self.grid()
         self.create_widgets()
     def create_widgets(self):
+        Canvas(self, bg="#cc7130", width=500, height=300, bd=0, highlightthickness=0).grid(row=0, column=0,columnspan=6, rowspan=6)
         Label(self,
               text = "You Won!",
-              font = ("Fixedsys", 50),
-              ). grid(row=0, column=3, sticky=W)
+              bg = "#cc7130",
+              fg = "Black",
+              font = ("Fixedsys 50"),
+             ). grid(row=0, column=1, columnspan = 3)
         Button(self,
                text = "Play Again",
-               font = ("Fixedsys", 20),
-               bg = "Red",
-               command = self.play_again
+               font = ("Fixedsys 16"),
+               bg ="#8B4513",
+               command= quit
                ).grid(row=2,column=1,sticky=W)
         Button(self,
-               text="Return To Title Screen",
-               font=("Fixedsys", 20),
-               bg="Blue",
-               command = self.title
-               ).grid(row=2, column=3, sticky=W)
+               text="Main Menu",
+               font=("Fixedsys 16"),
+               bg="#8B4513",
+               command=quit
+               ).grid(row=2, column=2, sticky=W)
         Button(self,
                text="Exit",
-               font=("Fixedsys", 20),
-               bg="Green",
-               command = self.exit
-               ).grid(row=2, column=5, sticky=W)
-        Label(self
-              ).grid(row=0, column=2, sticky=W)
-        Label(self
-              ).grid(row=0, column=4, sticky=W)
-    def play_again(self):
+               font=("Fixedsys 16"),
+               bg="#8B4513",
+               command = exit
+               ).grid(row=2, column=3, sticky=W)
+    def test(self):
         print(" ")
-    def title(self):
-        print(" ")
-    def exit(self):
-        exit()
 root = Tk()
 root.title("Win Screen")
 app = Application(root)
