@@ -1,14 +1,15 @@
 from tkinter import *
 from roomcreator import *
 from random import *
+from screen_win import Winscreen
+from time import *
 
-class Application(Frame):
+class Mainscreen(Frame):
 
-    def __init__(self, master, end_game):
+    def __init__(self, master):
         super().__init__(master)
         self.grid()
         self.create_widgets()
-        self.end_game = end_game
 
     def create_widgets(self):
 
@@ -72,6 +73,11 @@ class Application(Frame):
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_x -= 2
                 self.message_leg("up")
+            elif self.floor[self.player_x - 1][self.player_y] == "X":
+                mainscreen.destroy()
+                Winscreen(root)
+                root.title("You Win!")
+                root.geometry("660x134")
 
         if direction == "down":
 
@@ -85,6 +91,11 @@ class Application(Frame):
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_x += 2
                 self.message_leg("down")
+            elif self.floor[self.player_x + 1][self.player_y] == "X":
+                mainscreen.destroy()
+                Winscreen(root)
+                root.title("You Win!")
+                root.geometry("660x134")
 
         if direction == "left":
 
@@ -98,6 +109,11 @@ class Application(Frame):
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_y -= 2
                 self.message_leg("left")
+            elif self.floor[self.player_x][self.player_y - 1] == "X":
+                mainscreen.destroy()
+                Winscreen(root)
+                root.title("You Win!")
+                root.geometry("660x134")
 
         if direction == "right":
 
@@ -111,6 +127,11 @@ class Application(Frame):
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_y += 2
                 self.message_leg("right")
+            elif self.floor[self.player_x][self.player_y + 1] == "X":
+                mainscreen.destroy()
+                Winscreen(root)
+                root.title("You Win!")
+                root.geometry("660x134")
 
         for a in self.floor:
             for b in a:
@@ -404,27 +425,24 @@ class Application(Frame):
                 self.player_y = yc
                 return room
 
-    def print_thing(self):
-        print("Aaaaa")
-
 def up(event):
-    app.move_player("up")
+    mainscreen.move_player("up")
 
 def down(event):
-    app.move_player("down")
+    mainscreen.move_player("down")
 
 def left(event):
-    app.move_player("left")
+    mainscreen.move_player("left")
 
 def right(event):
-    app.move_player("right")
+    mainscreen.move_player("right")
 
 root = Tk()
 root.title("GOI")
 root.geometry("485x568")
 root.configure(bg="#cc7130")
 
-app = Application(root)
+mainscreen = Mainscreen(root)
 root.bind("<Up>", up)
 root.bind("<Down>", down)
 root.bind("<Left>", left)
