@@ -4,10 +4,11 @@ from random import *
 
 class Application(Frame):
 
-    def __init__(self, master):
+    def __init__(self, master, end_game):
         super().__init__(master)
         self.grid()
         self.create_widgets()
+        self.end_game = end_game
 
     def create_widgets(self):
 
