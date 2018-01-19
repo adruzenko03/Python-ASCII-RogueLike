@@ -127,7 +127,7 @@ class Application(Frame):
 
         # Loads room file and gets the starting room from that file
         roomfile = load_room_file("testroom.txt")
-        base = [roomfile[randint(0, 11)], 0, 0]
+        base = [roomfile[randint(0, len(roomfile)-1)], 0, 0]
 
         # Adds the start room to the list
         roomgrid = [base]
@@ -151,28 +151,29 @@ class Application(Frame):
                         condition = False
                 # If there isn't a room there, it makes a room there
                 if condition == True:
-                    roomgrid.append([roomfile[randint(1, 11)], selectedroom[1], selectedroom[2] - 1])
+                    roomgrid.append([roomfile[randint(1, len(roomfile)-1)], selectedroom[1], selectedroom[2] - 1])
 
             if direction == 2:
                 for x in roomgrid:
                     if selectedroom[1] == x[1] and selectedroom[2]+1 == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(1, 11)], selectedroom[1], selectedroom[2]+1])
+                    roomgrid.append([roomfile[randint(1, len(roomfile)-1)], selectedroom[1], selectedroom[2]+1])
 
             if direction == 3:
                 for x in roomgrid:
                     if selectedroom[1]-1 == x[1] and selectedroom[2] == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(1, 11)], selectedroom[1]-1, selectedroom[2]])
+                    roomgrid.append([roomfile[randint(1, len(roomfile)-1)], selectedroom[1]-1, selectedroom[2]])
 
             if direction == 4:
                 for x in roomgrid:
                     if selectedroom[1]+1 == x[1] and selectedroom[2] == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([roomfile[randint(1, 11)], selectedroom[1]+1, selectedroom[2]])
+                    roomgrid.append([roomfile[randint(1, len(roomfile)-1)], selectedroom[1]+1, selectedroom[2]])
+
             if maxrooms == 1:
                 # Selects a room and a direction
                 condition = True
@@ -402,6 +403,20 @@ class Application(Frame):
                 self.player_y = yc
                 return room
 
+    def print_thing(self):
+        print("Aaaaa")
+
+def up(event):
+    app.move_player("up")
+
+def down(event):
+    app.move_player("down")
+
+def left(event):
+    app.move_player("left")
+
+def right(event):
+    app.move_player("right")
 
 root = Tk()
 root.title("GOI")
@@ -409,4 +424,8 @@ root.geometry("485x568")
 root.configure(bg="#cc7130")
 
 app = Application(root)
+root.bind("<Up>", up)
+root.bind("<Down>", down)
+root.bind("<Left>", left)
+root.bind("<Right>", right)
 root.mainloop()
