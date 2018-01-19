@@ -2,9 +2,10 @@
 from tkinter import *
 
 class TitleScreen(Frame):
-    def __init__(self, master):
+    def __init__(self, master, maingame):
         super(TitleScreen, self).__init__(master)
 
+        self.maingame = maingame
         self.grid()
         self.create_widgets()
 
@@ -20,7 +21,7 @@ class TitleScreen(Frame):
         Button(self,
                text = "Play!",
                font = "Fixedsys 15",
-               command = quit,
+               command = self.cont,
                bg = "#8B4513",
                activebackground="#633310"
                ).grid(row = 1, column = 0)
@@ -32,8 +33,10 @@ class TitleScreen(Frame):
                bg = "#8B4513",
                activebackground="#633310"
                ).grid(row = 3, column = 0)
+    def cont(self):
+        self.maingame()
 
 root = Tk()
-root.title("Title")
-app = TitleScreen(root)
-root.mainloop()
+# root.title("Title")
+# app = TitleScreen(root)
+# root.mainloop()

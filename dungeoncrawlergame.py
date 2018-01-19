@@ -6,10 +6,11 @@ from time import *
 
 class Mainscreen(Frame):
 
-    def __init__(self, master):
+    def __init__(self, master, endo):
         super().__init__(master)
         self.grid()
         self.create_widgets()
+        self.endo=endo
 
     def create_widgets(self):
 
@@ -74,10 +75,7 @@ class Mainscreen(Frame):
                 self.player_x -= 2
                 self.message_leg("up")
             elif self.floor[self.player_x - 1][self.player_y] == "X":
-                mainscreen.destroy()
-                Winscreen(root)
-                root.title("You Win!")
-                root.geometry("660x134")
+                self.end_gme()
 
         if direction == "down":
 
@@ -424,7 +422,8 @@ class Mainscreen(Frame):
                 self.player_x = xc
                 self.player_y = yc
                 return room
-
+    def end_gme(self):
+        self.endo()
 def up(event):
     mainscreen.move_player("up")
 
@@ -437,14 +436,14 @@ def left(event):
 def right(event):
     mainscreen.move_player("right")
 
-root = Tk()
-root.title("GOI")
-root.geometry("485x568")
-root.configure(bg="#cc7130")
+# root = Tk()
+# root.title("GOI")
+# root.geometry("485x568")
+# root.configure(bg="#cc7130")
 
-mainscreen = Mainscreen(root)
-root.bind("<Up>", up)
-root.bind("<Down>", down)
-root.bind("<Left>", left)
-root.bind("<Right>", right)
-root.mainloop()
+# mainscreen = Mainscreen(root)
+# root.bind("<Up>", up)
+# root.bind("<Down>", down)
+# root.bind("<Left>", left)
+# root.bind("<Right>", right)
+# root.mainloop()
