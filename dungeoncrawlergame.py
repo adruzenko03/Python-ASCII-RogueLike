@@ -90,10 +90,7 @@ class Mainscreen(Frame):
                 self.player_x += 2
                 self.message_leg("down")
             elif self.floor[self.player_x + 1][self.player_y] == "X":
-                mainscreen.destroy()
-                Winscreen(root)
-                root.title("You Win!")
-                root.geometry("660x134")
+                self.end_gme()
 
         if direction == "left":
 
@@ -108,10 +105,7 @@ class Mainscreen(Frame):
                 self.player_y -= 2
                 self.message_leg("left")
             elif self.floor[self.player_x][self.player_y - 1] == "X":
-                mainscreen.destroy()
-                Winscreen(root)
-                root.title("You Win!")
-                root.geometry("660x134")
+                self.end_gme()
 
         if direction == "right":
 
@@ -126,10 +120,7 @@ class Mainscreen(Frame):
                 self.player_y += 2
                 self.message_leg("right")
             elif self.floor[self.player_x][self.player_y + 1] == "X":
-                mainscreen.destroy()
-                Winscreen(root)
-                root.title("You Win!")
-                root.geometry("660x134")
+                self.end_gme()
 
         for a in self.floor:
             for b in a:
@@ -424,17 +415,6 @@ class Mainscreen(Frame):
                 return room
     def end_gme(self):
         self.endo()
-def up(event):
-    mainscreen.move_player("up")
-
-def down(event):
-    mainscreen.move_player("down")
-
-def left(event):
-    mainscreen.move_player("left")
-
-def right(event):
-    mainscreen.move_player("right")
 
 # root = Tk()
 # root.title("GOI")
@@ -442,8 +422,4 @@ def right(event):
 # root.configure(bg="#cc7130")
 
 # mainscreen = Mainscreen(root)
-# root.bind("<Up>", up)
-# root.bind("<Down>", down)
-# root.bind("<Left>", left)
-# root.bind("<Right>", right)
 # root.mainloop()
