@@ -39,6 +39,7 @@ def right(event):
     if gme.ongame == True:
         gme.game.move_player("right")
 
+
 gme = Put_Everything_Together()
 gme.root.bind("<Up>", up)
 gme.root.bind("<Down>", down)
