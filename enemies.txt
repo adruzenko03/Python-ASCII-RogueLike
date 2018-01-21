@@ -1,0 +1,16 @@
+Skeleton
+20
+2
+verycommon
+---
+Wraith
+45
+3
+uncommon
+---
+Mimic
+75
+2
+rare
+---
+STOP

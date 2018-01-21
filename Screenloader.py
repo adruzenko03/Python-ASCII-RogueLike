@@ -1,25 +1,65 @@
 from tkinter import *
+from dungeoncrawlergame import *
+from title_screen import *
+from screen_win import *
+from screen_battle import *
+
 class Put_Everything_Together(object):
     def __init__(self):
         self.root = Tk()
 
     def pick_char(self):
-        self.root.title("BAAAACCCOOOOOOOOON!!!")
-        self.load_title = title_screen(self.root, self.main_game)
+        self.root.title("START GAME")
+        self.load_title = TitleScreen(self.root, self.create_main_game)
 
-    def main_game(self):
+    def create_main_game(self):
+        self.ongame = True
         self.load_title.destroy()
-        self.root.title("JESSSSSSSUUUUUUUSSSS")
-        self.game = dungeoncrawlergame(self.root, self.end)
+        self.root.title("DUNGEON")
+        self.game = Mainscreen(self.root, self.end_game, self.start_battle)
+        self.game.assemble_rooms()
 
-    def end(self):
+    def resume_main_game(self, player, x, y, floor):
+        self.ongame = True
+        self.battle_scene.destroy()
+        self.root.title("DUNGEON")
+        self.game = Mainscreen(self.root, self.end_game, self.start_battle, player, x, y, floor)
+        self.game.kill_nearby_enemies()
+        self.game.print_screen()
+
+    def end_game(self):
+        self.ongame = False
         self.game.destroy()
-        self.root.title("This is importante")
-        self.enend = fljngeojvdfn(self.root)
+        self.root.title("CONGRATULATIONS")
+        self.enend = Winscreen(self.root)
 
-def main()
-    gme = Put_Everything_Together()
-    gme.pick_char()
-    gme.root.mainloop()
+    def start_battle(self, player, x, y, floor):
+        self.ongame = False
+        self.game.destroy()
+        self.root.title("BATTLE")
+        self.battle_scene = Battlescreen(self.root, self.resume_main_game, player, x, y, floor)
 
-main()
+def up(event):
+    if gme.ongame == True:
+        gme.game.move_player("up")
+
+def down(event):
+    if gme.ongame == True:
+        gme.game.move_player("down")
+
+def left(event):
+    if gme.ongame == True:
+        gme.game.move_player("left")
+
+def right(event):
+    if gme.ongame == True:
+        gme.game.move_player("right")
+
+
+gme = Put_Everything_Together()
+gme.root.bind("<Up>", up)
+gme.root.bind("<Down>", down)
+gme.root.bind("<Left>", left)
+gme.root.bind("<Right>", right)
+gme.pick_char()
+gme.root.mainloop()
