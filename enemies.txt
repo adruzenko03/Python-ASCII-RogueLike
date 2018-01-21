@@ -8,4 +8,9 @@ Wraith
 3
 uncommon
 ---
+Mimic
+75
+2
+rare
+---
 STOP

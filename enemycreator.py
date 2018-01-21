@@ -1,3 +1,5 @@
+from random import *
+
 class Enemy (object):
 
     def __init__(self, name, maxhp, strength, rarity):
@@ -25,3 +27,30 @@ def load_enemy_file(file):
             del(linelist[0])
 
     return enemylist
+
+def get_random_enemy(enemylist):
+
+    posslist = []
+
+    for x in enemylist:
+
+        if x.rarity == "verycommon":
+            for y in range(1, 13):
+                posslist.append(x)
+
+        if x.rarity == "common":
+            for y in range(1, 7):
+                posslist.append(x)
+
+        if x.rarity == "uncommon":
+            for y in range(1, 5):
+                posslist.append(x)
+
+        if x.rarity == "rare":
+            for y in range(1, 3):
+                posslist.append(x)
+
+        if x.rarity == "veryrare":
+            posslist.append(x)
+
+    return choice(posslist)
