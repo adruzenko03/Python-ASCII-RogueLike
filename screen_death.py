@@ -1,5 +1,7 @@
 from tkinter import *
-class DeathScreen(Frame):
+
+
+class Deathscreen(Frame):
     def __init__(self, master):
         super().__init__(master)
         self.grid()
@@ -32,7 +34,3 @@ class DeathScreen(Frame):
                ).grid(row=2, column=3, sticky=W)
     def test(self):
         print(" ")
-root = Tk()
-root.title("Death Screen")
-app = DeathScreen(root)
-root.mainloop()

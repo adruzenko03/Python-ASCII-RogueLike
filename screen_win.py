@@ -32,7 +32,8 @@ class Winscreen(Frame):
                ).grid(row=2, column=3, sticky=W)
     def test(self):
         print(" ")
-root = Tk()
-root.title("Win Screen")
-app = Winscreen(root)
-root.mainloop()
+
+#root = Tk()
+#root.title("Win Screen")
+#app = Winscreen(root)
+#root.mainloop()

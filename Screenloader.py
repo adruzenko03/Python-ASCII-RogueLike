@@ -3,6 +3,7 @@ from dungeoncrawlergame import *
 from title_screen import *
 from screen_win import *
 from screen_battle import *
+from screen_death import *
 
 class Put_Everything_Together(object):
     def __init__(self):
@@ -37,7 +38,12 @@ class Put_Everything_Together(object):
         self.ongame = False
         self.game.destroy()
         self.root.title("BATTLE")
-        self.battle_scene = Battlescreen(self.root, self.resume_main_game, player, x, y, floor)
+        self.battle_scene = Battlescreen(self.root, self.resume_main_game, self.game_over, player, x, y, floor)
+
+    def game_over(self):
+        self.ongame = False
+        self.battle_scene.destroy()
+        self.death_scene = Deathscreen(self.root)
 
 def up(event):
     if gme.ongame == True:

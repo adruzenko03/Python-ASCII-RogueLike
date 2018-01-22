@@ -8,6 +8,11 @@ Wraith
 3
 uncommon
 ---
+Gelatinous Cube
+100
+1
+uncommon
+---
 Mimic
 75
 2
