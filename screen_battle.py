@@ -37,14 +37,14 @@ class Battlescreen(Frame):
     def attack(self):
         playerdamage = randint(1, 20)
         self.enemy.maxhp -= playerdamage
-        if self.enemy.maxhp < 0:
+        if self.enemy.maxhp <= 0:
             self.enemy.maxhp = 0
             self.attackb.destroy()
             self.go_backb = Button(self, text="Go Back", font="fixedsys", command=self.go_back)
             self.go_backb.grid(row=4, column=0, columnspan=2)
         enemydamage = randint(1, 10) + self.enemy.strength
         self.player.hp -= enemydamage
-        if self.player.hp < 0:
+        if self.player.hp <= 0:
             self.player.hp = 0
             self.attackb.destroy()
             if self.enemy.maxhp == 0:
