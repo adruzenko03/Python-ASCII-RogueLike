@@ -23,6 +23,7 @@ rare
 50-100
 ---
 Chaos
+1
 15
 rare
 1-100
@@ -36,7 +37,7 @@ rare
 Minotaur
 200
 5
-ultrarare
+veryrare
 50-100
 ---
 STOP

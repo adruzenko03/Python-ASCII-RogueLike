@@ -18,8 +18,6 @@ baseball_bat
 weapon
 20-25
 ---
-
----
 Potion of Minor Healing
 potion_min_heal
 potion
