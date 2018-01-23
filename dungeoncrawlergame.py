@@ -166,10 +166,9 @@ class Mainscreen(Frame):
         # Loads room file and gets the starting room from that file
         roomfile = load_room_file("testroom.txt")
         base = [deepcopy(roomfile[randint(1, len(roomfile)-1)]), 0, 0]
-
+        # !!!! roomgrid.delete(0.0, END)!!!!
         # Adds the start room to the list
         roomgrid = [base]
-
         # Maximum number of room is that number plus 1
         maxrooms = 8
 

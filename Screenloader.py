@@ -47,7 +47,7 @@ class Put_Everything_Together(object):
         self.ongame = False
         self.game.destroy()
         self.root.title("CONGRATULATIONS")
-        self.enend = Winscreen(self.root)
+        self.enend = Winscreen(self.root, self.remake_main_game)
 
     def start_battle(self, player, x, y, floor):
         self.ongame = False
@@ -59,6 +59,13 @@ class Put_Everything_Together(object):
         self.ongame = False
         self.battle_scene.destroy()
         self.death_scene = Deathscreen(self.root)
+
+    def remake_main_game(self):
+        self.ongame = True
+        self.enend.destroy()
+        self.root.title("DUNGEON")
+        self.game = Mainscreen(self.root, self.end_game, self.start_battle, self.open_inventory)
+        self.game.assemble_rooms()
 
 def up(event):
     if gme.ongame == True:

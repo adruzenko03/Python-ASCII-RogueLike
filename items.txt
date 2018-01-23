@@ -6,7 +6,19 @@ weapon
 Sword
 sword
 weapon
-5-20
+25-30
+---
+Frying Pan
+frying_pan
+weapon
+5-15
+---
+Baseball Bat
+baseball_bat
+weapon
+20-25
+---
+
 ---
 Potion of Minor Healing
 potion_min_heal
