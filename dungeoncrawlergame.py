@@ -6,13 +6,14 @@ from copy import *
 
 class Player(object):
 
-    def __init__(self, maxhealth):
+    def __init__(self, maxhealth, money=0):
         self.hp = maxhealth
+        self.money = money
 
 
 class Mainscreen(Frame):
 
-    def __init__(self, master, endo, bat, player=None, x=None, y=None, floor=None):
+    def __init__(self, master, endo, bat, openinv, player=None, x=None, y=None, floor=None):
         super().__init__(master)
         self.grid()
         if player == None:
@@ -23,14 +24,16 @@ class Mainscreen(Frame):
         self.player_x = x
         self.player_y = y
         self.floor = floor
+        self.openinv = openinv
         self.create_widgets()
         self.endo = endo
         self.bat = bat
 
+
     def create_widgets(self):
 
         # Background
-        Canvas(self, bg="#cc7130", width=480, height=560, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=6, rowspan=6)
+        Canvas(self, bg="#cc7130", width=480, height=575, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=6, rowspan=8)
 
         # Screen
         self.playarea = Text(self, width=49, height=13, font="consolas 12 bold")
@@ -46,20 +49,26 @@ class Mainscreen(Frame):
         self.rightb.grid(row=3, column=2, sticky=W)
         self.downb = Button(self, text=" ▼ ", bg="#8B4513", activebackground="#633310", command=lambda: self.move_player("down"))
         self.downb.grid(row=4, column=1)
-        self.centerb = Button(self, text=" ▼ ", bg="#8B4513", activebackground="#633310", fg="#8B4513", activeforeground="#633310")
+        self.centerb = Button(self, text=" ▼ ", bg="#8B4513", activebackground="#633310", fg="#8B4513", command=self.open_inv_screen, activeforeground="#633310")
         self.centerb.grid(row=3, column=1)
 
         # Message Log
         self.message_log_sb = Scrollbar(self)
-        self.message_log_sb.grid(row=2, column=5, rowspan=4, sticky=NS)
+        self.message_log_sb.grid(row=2, column=5, rowspan=6, sticky=NS)
         self.message_log = Text(self, width=25, height=17, wrap=WORD, yscrollcommand=self.message_log_sb.set)
-        self.message_log.grid(row=2, column=4, rowspan=4)
+        self.message_log.grid(row=2, column=4, rowspan=6)
         self.message_log_sb["command"] = self.message_log.yview
+
+        # Displays
+        self.health_display = Label(self, text=" ❤ "+str(self.player.hp)+" ", font="fixedsys", bg="#960c0c", width=11, relief=SUNKEN)
+        self.health_display.grid(row=5, column=0, columnspan=3)
+        self.money_display = Label(self, text=" ¢ " + str(self.player.money) + " ", font="fixedsys", bg="#ce9d0a", width=11, relief=SUNKEN)
+        self.money_display.grid(row=6, column=0, columnspan=3)
 
         # Load-Bearing Labels (Do not edit)
         Label(self, text="", bg="#cc7130", height=1).grid(row=1, column=1)
-        Label(self, text="", bg="#cc7130", width=18).grid(row=3, column=3)
-        Label(self, text="", bg="#cc7130", height=12).grid(row=5, column=0)
+        Label(self, text="", bg="#cc7130", width=18, height=2).grid(row=3, column=3)
+        Label(self, text="", bg="#cc7130", height=11).grid(row=7, column=0)
 
     def message_leg(self, direction):
 
@@ -468,11 +477,20 @@ class Mainscreen(Frame):
                 self.player_y = yc
                 return room
 
+    def add_moneydrop(self, enemy):
+        money = randint(int(enemy.moneydrop[0]), int(enemy.moneydrop[1]))
+        self.player.money += money
+        self.money_display["text"] = " ¢ " + str(self.player.money) + " "
+        self.message_log.insert(0.0, "-Bup got " + str(money) + " gold for killing the " + enemy.name + "!")
+
     def end_gme(self):
         self.endo()
 
     def do_battle(self):
         self.bat(self.player, self.player_x, self.player_y, self.floor)
+
+    def open_inv_screen(self):
+        self.openinv(self.player, self.player_x, self.player_y, self.floor)
 
 
 # root = Tk()

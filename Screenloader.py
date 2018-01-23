@@ -3,6 +3,7 @@ from dungeoncrawlergame import *
 from title_screen import *
 from screen_win import *
 from screen_battle import *
+from screen_inventory import *
 from screen_death import *
 
 class Put_Everything_Together(object):
@@ -17,15 +18,29 @@ class Put_Everything_Together(object):
         self.ongame = True
         self.load_title.destroy()
         self.root.title("DUNGEON")
-        self.game = Mainscreen(self.root, self.end_game, self.start_battle)
+        self.game = Mainscreen(self.root, self.end_game, self.start_battle, self.open_inventory)
         self.game.assemble_rooms()
 
-    def resume_main_game(self, player, x, y, floor):
+    def resume_main_game(self, player, x, y, floor, enemy):
         self.ongame = True
         self.battle_scene.destroy()
         self.root.title("DUNGEON")
-        self.game = Mainscreen(self.root, self.end_game, self.start_battle, player, x, y, floor)
+        self.game = Mainscreen(self.root, self.end_game, self.start_battle, self.open_inventory, player, x, y, floor)
+        self.game.add_moneydrop(enemy)
         self.game.kill_nearby_enemies()
+        self.game.print_screen()
+
+    def open_inventory(self, player, x, y, floor):
+        self.ongame = False
+        self.game.destroy()
+        self.root.title("INVENTORY")
+        self.inv = Inventoryscreen(self.root, self.close_inventory, player, x, y, floor)
+
+    def close_inventory(self, player, x, y, floor):
+        self.ongame = True
+        self.inv.destroy()
+        self.root.title("DUNGEON")
+        self.game = Mainscreen(self.root, self.end_game, self.start_battle, self.open_inventory, player, x, y, floor)
         self.game.print_screen()
 
     def end_game(self):
@@ -61,11 +76,21 @@ def right(event):
     if gme.ongame == True:
         gme.game.move_player("right")
 
+def openinventory(event):
+    if gme.ongame == True:
+        gme.game.open_inv_screen()
+
+def closeinventory(event):
+    if gme.ongame == False:
+        gme.inv.goback()
+
 
 gme = Put_Everything_Together()
 gme.root.bind("<Up>", up)
 gme.root.bind("<Down>", down)
 gme.root.bind("<Left>", left)
 gme.root.bind("<Right>", right)
+gme.root.bind("<Key-z>", openinventory)
+gme.root.bind("<Key-x>", closeinventory)
 gme.pick_char()
 gme.root.mainloop()

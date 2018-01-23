@@ -1,0 +1,26 @@
+Knife
+knife
+weapon
+1-10
+---
+Sword
+sword
+weapon
+5-20
+---
+Potion of Minor Healing
+potion_min_heal
+potion
+20
+---
+Potion of Moderate Healing
+potion_mod_heal
+potion
+50
+---
+Potion of Major Healing
+potion_maj_heal
+potion
+80
+---
+STOP

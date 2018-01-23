@@ -35,14 +35,14 @@ class Battlescreen(Frame):
         Label(self, text="", font="fixedsys", width=18).grid(row=0, column=1)
 
     def attack(self):
-        playerdamage = randint(1, 15)
+        playerdamage = randint(1, 20)
         self.enemy.maxhp -= playerdamage
         if self.enemy.maxhp < 0:
             self.enemy.maxhp = 0
             self.attackb.destroy()
             self.go_backb = Button(self, text="Go Back", font="fixedsys", command=self.go_back)
             self.go_backb.grid(row=4, column=0, columnspan=2)
-        enemydamage = randint(1, 50) + self.enemy.strength
+        enemydamage = randint(1, 10) + self.enemy.strength
         self.player.hp -= enemydamage
         if self.player.hp < 0:
             self.player.hp = 0
@@ -55,7 +55,7 @@ class Battlescreen(Frame):
         self.playerhp["text"] = self.player.hp
 
     def go_back(self):
-        self.resume(self.player, self.player_x, self.player_y, self.floor)
+        self.resume(self.player, self.player_x, self.player_y, self.floor, self.enemy)
 
     def player_die(self):
         self.die()
