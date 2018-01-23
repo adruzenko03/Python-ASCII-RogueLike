@@ -38,4 +38,5 @@ Minotaur
 5
 ultrarare
 50-100
+---
 STOP
