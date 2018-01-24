@@ -1,36 +1,61 @@
+Rusty Knife
+rusty_knife
+A rusty, decrepit dagger that deals 1 to 8 damage. The blade seems to be a little loose.
+weapon
+1-8
+---
 Knife
 knife
+A shiny, new knife that deals 5 to 10 damage.
 weapon
-1-10
+5-10
 ---
 Sword
 sword
+A well-crafted blade that deals 20 to 25 damage.
 weapon
-25-30
+20-25
 ---
 Frying Pan
 frying_pan
+A heavy frying pan that deals 5 to 15 damage.
 weapon
 5-15
 ---
 Baseball Bat
 baseball_bat
+An old, wooden baseball bat that deals 15 to 20 damage. Wonder how it got down here though...
 weapon
-20-25
+15-20
+---
+Hatchet
+hatchet
+A red, sturdy axe that deals 10 to 25 damage. It was designed to chop wood, but it should be just as good at chopping enemies.
+weapon
+10-25
 ---
 Potion of Minor Healing
 potion_min_heal
+A small, bandaged vial of healing elixir that restores 20 health.
 potion
 20
 ---
 Potion of Moderate Healing
 potion_mod_heal
+A fair-sized flask of healing elixir that restores 50 health.
 potion
 50
 ---
 Potion of Major Healing
 potion_maj_heal
+A large bottle containing a healing elixir that restores a whopping 80 health.
 potion
 80
+---
+Gelatinous Goo
+gelatinous_goo
+A blob of Gelatinous Cube goo... it feels weird and only heals 15 damage, but generally comes in ample supply.
+potion
+15
 ---
 STOP

@@ -1,42 +1,49 @@
 Skeleton
 20
 2
+rusty_knife, rusty_knife, knife, knife, sword, sword, hatchet
 verycommon
 1-10
 ---
 Wraith
 45
 3
+knife, knife, sword, sword
 uncommon
 15-45
 ---
 Gelatinous Cube
 100
 1
+ATTACK:1-10
 uncommon
 20-40
 ---
 Mimic
 75
 2
+ATTACK:5-15
 rare
 50-100
 ---
 Chaos
-1
+5
 15
+ATTACK:30-40
 rare
 1-100
 ---
 Maddened Traveller
 50
 5
+sword, sword, knife, frying_pan, baseball_bat, hatchet, hatchet
 rare
 200-250
 ---
 Minotaur
 200
 5
+sword
 veryrare
 50-100
 ---

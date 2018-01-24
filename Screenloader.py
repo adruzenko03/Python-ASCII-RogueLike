@@ -1,5 +1,6 @@
 from tkinter import *
 from dungeoncrawlergame import *
+from itemcreator import *
 from title_screen import *
 from screen_win import *
 from screen_battle import *
@@ -19,6 +20,13 @@ class Put_Everything_Together(object):
         self.load_title.destroy()
         self.root.title("DUNGEON")
         self.game = Mainscreen(self.root, self.end_game, self.start_battle, self.open_inventory)
+        self.itemlist = load_item_file("items.txt")
+        for i in self.itemlist:
+            if i.id == "hatchet":
+                self.game.player.inventory.append(i)
+                self.game.player.equipped = self.game.player.inventory[0]
+            if i.id == "potion_min_heal":
+                self.game.player.inventory.append(i)
         self.game.assemble_rooms()
 
     def resume_main_game(self, player, x, y, floor, enemy):

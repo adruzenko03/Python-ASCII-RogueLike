@@ -9,6 +9,8 @@ class Player(object):
     def __init__(self, maxhealth, money=0):
         self.hp = maxhealth
         self.money = money
+        self.inventory = []
+        self.equipped = None
 
 
 class Mainscreen(Frame):
