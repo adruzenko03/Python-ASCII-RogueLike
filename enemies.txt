@@ -28,8 +28,8 @@ rare
 ---
 Chaos
 5
-15
-ATTACK:30-40
+5
+ATTACK:25-35
 rare
 1-100
 ---

@@ -18,7 +18,7 @@ weapon
 ---
 Frying Pan
 frying_pan
-A heavy frying pan that deals 5 to 15 damage. It also cooks really good omletes
+A heavy frying pan that deals 5 to 15 damage. It doesn't appear to be clean either.
 weapon
 5-15
 ---
@@ -36,13 +36,13 @@ weapon
 ---
 Potion of Minor Healing
 potion_min_heal
-A small, bandaged vial of healing elixir that restores 20 health.
+A small, bandaged vial of healing elixir that restores 20 health. It appears to be leaking... Yep, definitely leaking.
 potion
 20
 ---
 Potion of Moderate Healing
 potion_mod_heal
-A fair-sized flask of healing elixir that restores 50 health.
+A fair-sized flask of healing elixir that restores 50 health. It tastes like grape medicine.
 potion
 50
 ---
