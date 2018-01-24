@@ -6,19 +6,19 @@ weapon
 ---
 Knife
 knife
-A shiny, new knife that deals 5 to 10 damage.
+A shiny, new knife that deals 5 to 10 damage. The blade does not seem to be a little loose
 weapon
 5-10
 ---
 Sword
 sword
-A well-crafted blade that deals 20 to 25 damage.
+A well-crafted blade that deals 20 to 25 damage. Can be bought online for $50. There's no wifi here though...
 weapon
 20-25
 ---
 Frying Pan
 frying_pan
-A heavy frying pan that deals 5 to 15 damage.
+A heavy frying pan that deals 5 to 15 damage. It also cooks really good omletes
 weapon
 5-15
 ---
