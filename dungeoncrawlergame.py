@@ -15,14 +15,14 @@ class Player(object):
 
 class Mainscreen(Frame):
 
-    def __init__(self, master, endo, bat, openinv, player=None, x=None, y=None, floor=None):
+    def __init__(self, master, endo, bat, openinv, level=1, player=None, x=None, y=None, floor=None):
         super().__init__(master)
         self.grid()
         if player == None:
             self.player = Player(100)
         else:
             self.player = player
-        self.level = 1
+        self.level = level
         self.player_x = x
         self.player_y = y
         self.floor = floor
@@ -172,7 +172,7 @@ class Mainscreen(Frame):
         # Adds the start room to the list
         roomgrid = [base]
         # Maximum number of room is that number plus 1
-        maxrooms = 8
+        maxrooms = 7 + self.level
 
         # Runs until all the rooms are made
         while maxrooms > 1:
@@ -470,8 +470,8 @@ class Mainscreen(Frame):
     def spawn_character(self, room, xl, yl):
 
         while 1==1:
-            xc = randint(0, xl-1)
-            yc = randint(0, yl-1)
+            xc = randint(0, xl-2)
+            yc = randint(0, yl-2)
             if room[xc][yc] == " ":
                 room[xc][yc] = "Ü"
                 self.player_x = xc
@@ -485,13 +485,13 @@ class Mainscreen(Frame):
         self.message_log.insert(0.0, "-Bup got " + str(money) + " gold for killing the " + enemy.name + "!")
 
     def end_gme(self):
-        self.endo()
+        self.endo(self.level, self.player)
 
     def do_battle(self):
-        self.bat(self.player, self.player_x, self.player_y, self.floor)
+        self.bat(self.level, self.player, self.player_x, self.player_y, self.floor)
 
     def open_inv_screen(self):
-        self.openinv(self.player, self.player_x, self.player_y, self.floor)
+        self.openinv(self.level, self.player, self.player_x, self.player_y, self.floor)
 
 
 # root = Tk()

@@ -54,7 +54,7 @@ potion
 ---
 Gelatinous Goo
 gelatinous_goo
-A blob of Gelatinous Cube goo... it feels weird and only heals 15 damage, but generally comes in ample supply.
+A blob of Gelatinous Cube goo... it feels weird and only restores 15 health, but generally comes in ample supply.
 potion
 15
 ---

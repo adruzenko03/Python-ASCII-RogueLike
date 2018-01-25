@@ -13,13 +13,19 @@ class Put_Everything_Together(object):
 
     def pick_char(self):
         self.root.title("START GAME")
-        self.load_title = TitleScreen(self.root, self.create_main_game)
+        self.load_title = TitleScreen(self.root, self.start_cutscene)
+
+    def start_cutscene(self):
+        self.cs = "begin"
+        self.load_title.destroy()
+        self.root.title("BEGIN")
+        self.sc = Winscreen(self.root, self.create_main_game, 1, None)
 
     def create_main_game(self):
-        self.ongame = True
-        self.load_title.destroy()
+        self.cs = "game"
+        self.sc.destroy()
         self.root.title("DUNGEON")
-        self.game = Mainscreen(self.root, self.end_game, self.start_battle, self.open_inventory)
+        self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory)
         self.itemlist = load_item_file("items.txt")
         for i in self.itemlist:
             if i.id == "hatchet":
@@ -29,83 +35,90 @@ class Put_Everything_Together(object):
                 self.game.player.inventory.append(i)
         self.game.assemble_rooms()
 
-    def resume_main_game(self, player, x, y, floor, enemy):
-        self.ongame = True
+    def resume_main_game(self, level, player, x, y, floor, enemy):
+        self.cs = "game"
         self.battle_scene.destroy()
         self.root.title("DUNGEON")
-        self.game = Mainscreen(self.root, self.end_game, self.start_battle, self.open_inventory, player, x, y, floor)
+        self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, level, player, x, y, floor)
         self.game.add_moneydrop(enemy)
         self.game.kill_nearby_enemies()
         self.game.print_screen()
 
-    def open_inventory(self, player, x, y, floor):
-        self.ongame = False
+    def open_inventory(self, level, player, x, y, floor):
+        self.cs = "inventory"
         self.game.destroy()
         self.root.title("INVENTORY")
-        self.inv = Inventoryscreen(self.root, self.close_inventory, player, x, y, floor)
+        self.inv = Inventoryscreen(self.root, self.close_inventory, level, player, x, y, floor)
 
-    def close_inventory(self, player, x, y, floor):
-        self.ongame = True
+    def close_inventory(self, level, player, x, y, floor):
+        self.cs = "game"
         self.inv.destroy()
         self.root.title("DUNGEON")
-        self.game = Mainscreen(self.root, self.end_game, self.start_battle, self.open_inventory, player, x, y, floor)
+        self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, level, player, x, y, floor)
         self.game.print_screen()
 
-    def end_game(self):
-        self.ongame = False
+    def end_level(self, level, player):
+        self.cs = "end"
         self.game.destroy()
         self.root.title("CONGRATULATIONS")
-        self.enend = Winscreen(self.root, self.remake_main_game)
+        level += 1
+        self.enend = Winscreen(self.root, self.next_level, level, player)
 
-    def start_battle(self, player, x, y, floor):
-        self.ongame = False
+    def start_battle(self, level, player, x, y, floor):
+        self.cs = "battle"
         self.game.destroy()
         self.root.title("BATTLE")
-        self.battle_scene = Battlescreen(self.root, self.resume_main_game, self.game_over, player, x, y, floor)
+        self.battle_scene = Battlescreen(self.root, self.resume_main_game, self.game_over, level, player, x, y, floor)
 
     def game_over(self):
-        self.ongame = False
+        self.cs = "death"
         self.battle_scene.destroy()
         self.death_scene = Deathscreen(self.root)
 
-    def remake_main_game(self):
-        self.ongame = True
+    def next_level(self, level, player):
+        self.cs = "game"
         self.enend.destroy()
         self.root.title("DUNGEON")
-        self.game = Mainscreen(self.root, self.end_game, self.start_battle, self.open_inventory)
+        self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, level, player)
         self.game.assemble_rooms()
 
 def up(event):
-    if gme.ongame == True:
+    if gme.cs == "game":
         gme.game.move_player("up")
 
 def down(event):
-    if gme.ongame == True:
+    if gme.cs == "game":
         gme.game.move_player("down")
 
 def left(event):
-    if gme.ongame == True:
+    if gme.cs == "game":
         gme.game.move_player("left")
 
 def right(event):
-    if gme.ongame == True:
+    if gme.cs == "game":
         gme.game.move_player("right")
 
-def openinventory(event):
-    if gme.ongame == True:
+def pressz(event):
+    if gme.cs == "inventory":
+        gme.inv.use_item()
+
+def pressx(event):
+    if gme.cs == "inventory":
+        gme.inv.equip_item()
+
+def pressc(event):
+    if gme.cs == "game":
         gme.game.open_inv_screen()
-
-def closeinventory(event):
-    if gme.ongame == False:
-        gme.inv.goback()
-
+    elif gme.cs == "inventory":
+        gme.inv.go_back()
 
 gme = Put_Everything_Together()
 gme.root.bind("<Up>", up)
 gme.root.bind("<Down>", down)
 gme.root.bind("<Left>", left)
 gme.root.bind("<Right>", right)
-gme.root.bind("<Key-z>", openinventory)
-gme.root.bind("<Key-x>", closeinventory)
+gme.root.bind("<Key-z>", pressz)
+gme.root.bind("<Key-x>", pressx)
+gme.root.bind("<Key-c>", pressc)
 gme.pick_char()
 gme.root.mainloop()

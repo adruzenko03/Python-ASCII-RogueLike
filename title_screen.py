@@ -2,10 +2,10 @@
 from tkinter import *
 
 class TitleScreen(Frame):
-    def __init__(self, master, maingame):
+    def __init__(self, master, next):
         super(TitleScreen, self).__init__(master)
 
-        self.maingame = maingame
+        self.maingame = next
         self.grid()
         self.create_widgets()
 

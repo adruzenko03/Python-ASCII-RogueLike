@@ -2,9 +2,10 @@ from tkinter import *
 
 class Inventoryscreen(Frame):
 
-    def __init__(self, master, back, player, x, y, floor):
+    def __init__(self, master, back, level, player, x, y, floor):
         super().__init__(master)
         self.back = back
+        self.level = level
         self.player = player
         self.player_x = x
         self.player_y = y
@@ -13,30 +14,38 @@ class Inventoryscreen(Frame):
         self.grid()
 
     def create_widgets(self):
-        Canvas(self, bg="#cc7130", width=275, height=280, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=3, rowspan=4, sticky=NW)
+        Canvas(self, bg="#cc7130", width=310, height=360, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=3, rowspan=7, sticky=NW)
+
+        self.name = Label(self, text="Bup", font="fixedsys", bg="#cc7130").grid(row=0, column=0, rowspan=3)
+        self.health_display = Label(self, text=" ❤ " + str(self.player.hp) + " ", font="fixedsys", bg="#960c0c", width=11, relief=SUNKEN)
+        self.health_display.grid(row=0, column=1)
+        self.money_display = Label(self, text=" ¢ " + str(self.player.money) + " ", font="fixedsys", bg="#ce9d0a", width=11, relief=SUNKEN)
+        self.money_display.grid(row=1, column=1)
+        self.equip_display = Label(self, text=" Item: " + str(self.player.equipped.name) + " ", font="fixedsys", bg="#cc7130")
+        self.equip_display.grid(row=2, column=1)
 
         self.sb = Scrollbar(self)
-        self.sb.grid(row=0, column=0, sticky=NS)
+        self.sb.grid(row=3, column=0, sticky=NS)
 
-        self.items = Listbox(self, width=25, height=10, yscrollcommand=self.sb.set, font="fixedsys")
-        self.items.grid(row=0, column=1)
-        self.items.bind("<<ListboxSelect>>", self.showdesc)
+        self.items = Listbox(self, width=28, height=10, yscrollcommand=self.sb.set, font="fixedsys")
+        self.items.grid(row=3, column=1)
+        self.items.bind("<<ListboxSelect>>", self.show_desc)
         for x in self.player.inventory:
             self.items.insert(END, x.name)
 
         self.sb["command"] = self.items.yview
 
-        self.descbox = Text(self, font="fixedsys", wrap=WORD, width=25, height=6, state=DISABLED)
-        self.descbox.grid(row=1, column=1, rowspan=3)
+        self.descbox = Text(self, font="fixedsys", wrap=WORD, width=28, height=6, state=DISABLED)
+        self.descbox.grid(row=4, column=1, rowspan=3)
 
-        self.go_back = Button(self, text="GO BACK", font="fixedsys", command=self.goback)
-        self.go_back.grid(row=1, column=0)
-        self.go_back = Button(self, text="USE", font="fixedsys")
-        self.go_back.grid(row=2, column=0)
-        self.go_back = Button(self, text="EQUIP", font="fixedsys")
-        self.go_back.grid(row=3, column=0)
+        self.goback = Button(self, text="GO BACK", font="fixedsys", command=self.go_back)
+        self.goback.grid(row=4, column=0)
+        self.use = Button(self, text="USE", font="fixedsys", command=self.use_item)
+        self.use.grid(row=5, column=0)
+        self.equip = Button(self, text="EQUIP", font="fixedsys", command=self.equip_item)
+        self.equip.grid(row=6, column=0)
 
-    def showdesc(self, event):
+    def show_desc(self, event):
         w = event.widget
         index = int(w.curselection()[0])
         self.descbox["state"] = NORMAL
@@ -44,5 +53,26 @@ class Inventoryscreen(Frame):
         self.descbox.insert(0.0, self.player.inventory[index].desc)
         self.descbox["state"] = DISABLED
 
-    def goback(self):
-        self.back(self.player, self.player_x, self.player_y, self.floor)
+    def use_item(self):
+        index = int(self.items.curselection()[0])
+        if self.player.inventory[index].type == "potion":
+            self.player.hp += self.player.inventory[index].output
+            if self.player.hp >= 100:
+                self.player.hp = 100
+            del(self.player.inventory[index])
+            self.items.destroy()
+            self.items = Listbox(self, width=28, height=10, yscrollcommand=self.sb.set, font="fixedsys")
+            self.items.grid(row=3, column=1)
+            self.items.bind("<<ListboxSelect>>", self.show_desc)
+            for x in self.player.inventory:
+                self.items.insert(END, x.name)
+            self.health_display["text"] = " ❤ " + str(self.player.hp) + " "
+
+    def equip_item(self):
+        index = int(self.items.curselection()[0])
+        if self.player.inventory[index].type == "weapon":
+            self.player.equipped = self.player.inventory[index]
+            self.equip_display["text"] = " Item: " + str(self.player.equipped.name) + " "
+
+    def go_back(self):
+        self.back(self.level, self.player, self.player_x, self.player_y, self.floor)

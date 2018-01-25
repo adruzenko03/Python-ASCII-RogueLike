@@ -4,6 +4,7 @@ Skeleton
 rusty_knife, rusty_knife, knife, knife, sword, sword, hatchet
 verycommon
 1-10
+50, potion_min_heal
 ---
 Wraith
 45
@@ -11,6 +12,7 @@ Wraith
 knife, knife, sword, sword
 uncommon
 15-45
+60, potion_mod_heal | 25, potion_mod_heal
 ---
 Gelatinous Cube
 100
@@ -18,6 +20,7 @@ Gelatinous Cube
 ATTACK:1-10
 uncommon
 20-40
+50, gelatinous_goo | 50, gelatinous_goo | 50, gelatinous_goo | 50, gelatinous_goo | 50, gelatinous_goo
 ---
 Mimic
 75
@@ -25,6 +28,7 @@ Mimic
 ATTACK:5-15
 rare
 50-100
+40, potion_mod_heal, potion_mod_heal, potion_mod_heal, potion_maj_heal
 ---
 Chaos
 5
@@ -32,6 +36,7 @@ Chaos
 ATTACK:25-35
 rare
 1-100
+50, potion_mod_heal | 50, potion_mod_heal, potion_maj_heal
 ---
 Maddened Traveller
 50
@@ -39,6 +44,7 @@ Maddened Traveller
 sword, sword, knife, frying_pan, baseball_bat, hatchet, hatchet
 rare
 200-250
+25, potion_maj_heal | 50, potion_min_heal | 75, potion_min_heal
 ---
 Minotaur
 200
@@ -46,5 +52,6 @@ Minotaur
 sword
 veryrare
 50-100
+100, potion_maj_heal
 ---
 STOP
