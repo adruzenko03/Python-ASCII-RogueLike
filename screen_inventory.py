@@ -38,11 +38,11 @@ class Inventoryscreen(Frame):
         self.descbox = Text(self, font="fixedsys", wrap=WORD, width=28, height=6, state=DISABLED)
         self.descbox.grid(row=4, column=1, rowspan=3)
 
-        self.goback = Button(self, text="GO BACK", font="fixedsys", command=self.go_back)
+        self.goback = Button(self, text="GO BACK", font="fixedsys", bg="#8B4513", activebackground="#633310", command=self.go_back)
         self.goback.grid(row=4, column=0)
-        self.use = Button(self, text="USE", font="fixedsys", command=self.use_item)
+        self.use = Button(self, text="USE", font="fixedsys", bg="#8B4513", activebackground="#633310", command=self.use_item)
         self.use.grid(row=5, column=0)
-        self.equip = Button(self, text="EQUIP", font="fixedsys", command=self.equip_item)
+        self.equip = Button(self, text="EQUIP", font="fixedsys", bg="#8B4513", activebackground="#633310", command=self.equip_item)
         self.equip.grid(row=6, column=0)
 
     def show_desc(self, event):

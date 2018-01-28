@@ -2,6 +2,8 @@ from tkinter import *
 from roomcreator import *
 from random import *
 from copy import *
+from time import *
+from threading import *
 
 
 class Player(object):
@@ -11,6 +13,10 @@ class Player(object):
         self.money = money
         self.inventory = []
         self.equipped = None
+
+class Enemythread(Thread):
+
+    con = True
 
 
 class Mainscreen(Frame):
@@ -93,12 +99,12 @@ class Mainscreen(Frame):
                 self.floor[self.player_x - 1][self.player_y] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_x -= 1
-                self.message_leg("up")
+                #self.message_leg("up")
             elif self.floor[self.player_x - 1][self.player_y] == "□":
                 self.floor[self.player_x - 2][self.player_y] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_x -= 2
-                self.message_leg("up")
+                #self.message_leg("up")
             elif self.floor[self.player_x - 1][self.player_y] == "X":
                 self.end_gme()
 
@@ -108,12 +114,12 @@ class Mainscreen(Frame):
                 self.floor[self.player_x + 1][self.player_y] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_x += 1
-                self.message_leg("down")
+                #self.message_leg("down")
             elif self.floor[self.player_x + 1][self.player_y] == "□":
                 self.floor[self.player_x + 2][self.player_y] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_x += 2
-                self.message_leg("down")
+                #self.message_leg("down")
             elif self.floor[self.player_x + 1][self.player_y] == "X":
                 self.end_gme()
 
@@ -123,12 +129,12 @@ class Mainscreen(Frame):
                 self.floor[self.player_x][self.player_y - 1] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_y -= 1
-                self.message_leg("left")
+                #self.message_leg("left")
             elif self.floor[self.player_x][self.player_y - 1] == "□":
                 self.floor[self.player_x][self.player_y - 2] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_y -= 2
-                self.message_leg("left")
+                #self.message_leg("left")
             elif self.floor[self.player_x][self.player_y - 1] == "X":
                 self.end_gme()
 
@@ -138,12 +144,12 @@ class Mainscreen(Frame):
                 self.floor[self.player_x][self.player_y + 1] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_y += 1
-                self.message_leg("right")
+                #self.message_leg("right")
             elif self.floor[self.player_x][self.player_y + 1] == "□":
                 self.floor[self.player_x][self.player_y + 2] = "Ü"
                 self.floor[self.player_x][self.player_y] = " "
                 self.player_y += 2
-                self.message_leg("right")
+                #self.message_leg("right")
             elif self.floor[self.player_x][self.player_y + 1] == "X":
                 self.end_gme()
 
@@ -381,6 +387,69 @@ class Mainscreen(Frame):
 
         self.print_screen()
 
+    def create_enemy_movement(self):
+        self.thr = Enemythread(target=self.move_enemies)
+        self.thr.start()
+
+    def move_enemies(self):
+        while 1==1:
+            if self.thr.con == True:
+                for a in range(0, len(self.floor)-1):
+                    for b in range(0, len(self.floor[0])-1):
+                        try:
+                            if self.floor[a][b] == "Ö":
+                                if self.player_x-8 <= a <= self.player_x+8 and self.player_y-8 <= b <= self.player_y+8:
+                                    if a == self.player_x:
+                                        if b < self.player_y:
+                                            if self.floor[a][b+1] == " ":
+                                                self.floor[a][b] = " "
+                                                self.floor[a][b+1] = "Ö"
+                                        if b > self.player_y:
+                                            if self.floor[a][b-1] == " ":
+                                                self.floor[a][b] = " "
+                                                self.floor[a][b-1] = "Ö"
+                                        self.print_screen()
+                                        sleep(0.2)
+                                    elif b == self.player_y:
+                                        if a < self.player_x:
+                                            if self.floor[a+1][b] == " ":
+                                                self.floor[a][b] = " "
+                                                self.floor[a+1][b] = "Ö"
+                                        if a > self.player_x:
+                                            if self.floor[a-1][b] == " ":
+                                                self.floor[a][b] = " "
+                                                self.floor[a-1][b] = "Ö"
+                                        self.print_screen()
+                                        sleep(0.2)
+                                    elif a < self.player_x and b < self.player_y:
+                                        if self.floor[a + 1][b + 1] == " " and (self.floor[a+1][b] == " " or self.floor[a][b+1] == " "):
+                                            self.floor[a][b] = " "
+                                            self.floor[a + 1][b + 1] = "Ö"
+                                            self.print_screen()
+                                            sleep(0.2)
+                                    elif a > self.player_x and b > self.player_y:
+                                        if self.floor[a - 1][b - 1] == " " and (self.floor[a-1][b] == " " or self.floor[a][b-1] == " "):
+                                            self.floor[a][b] = " "
+                                            self.floor[a - 1][b - 1] = "Ö"
+                                            self.print_screen()
+                                            sleep(0.2)
+                                    elif a > self.player_x and b < self.player_y:
+                                        if self.floor[a - 1][b + 1] == " " and (self.floor[a-1][b] == " " or self.floor[a][b+1] == " "):
+                                            self.floor[a][b] = " "
+                                            self.floor[a - 1][b + 1] = "Ö"
+                                            sleep(0.2)
+                                    elif a < self.player_x and b > self.player_y:
+                                        if self.floor[a + 1][b - 1] == " " and (self.floor[a+1][b] == " " or self.floor[a][b-1] == " "):
+                                            self.floor[a][b] = " "
+                                            self.floor[a + 1][b - 1] = "Ö"
+                                            sleep(0.2)
+                        except:
+                            pass
+            else:
+                break
+            sleep(0.2)
+
+
     def print_screen(self):
 
         s = ""
@@ -488,6 +557,7 @@ class Mainscreen(Frame):
         self.endo(self.level, self.player)
 
     def do_battle(self):
+        self.thr.con = False
         self.bat(self.level, self.player, self.player_x, self.player_y, self.floor)
 
     def open_inv_screen(self):

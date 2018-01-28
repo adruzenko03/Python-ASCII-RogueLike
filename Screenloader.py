@@ -34,6 +34,7 @@ class Put_Everything_Together(object):
             if i.id == "potion_min_heal":
                 self.game.player.inventory.append(i)
         self.game.assemble_rooms()
+        self.game.create_enemy_movement()
 
     def resume_main_game(self, level, player, x, y, floor, enemy):
         self.cs = "game"
@@ -42,6 +43,7 @@ class Put_Everything_Together(object):
         self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, level, player, x, y, floor)
         self.game.add_moneydrop(enemy)
         self.game.kill_nearby_enemies()
+        self.game.create_enemy_movement()
         self.game.print_screen()
 
     def open_inventory(self, level, player, x, y, floor):
@@ -55,6 +57,7 @@ class Put_Everything_Together(object):
         self.inv.destroy()
         self.root.title("DUNGEON")
         self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, level, player, x, y, floor)
+        self.game.create_enemy_movement()
         self.game.print_screen()
 
     def end_level(self, level, player):
@@ -81,6 +84,7 @@ class Put_Everything_Together(object):
         self.root.title("DUNGEON")
         self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, level, player)
         self.game.assemble_rooms()
+        self.game.create_enemy_movement()
 
 def up(event):
     if gme.cs == "game":

@@ -20,7 +20,7 @@ Gelatinous Cube
 ATTACK:1-10
 uncommon
 20-40
-50, gelatinous_goo | 50, gelatinous_goo | 50, gelatinous_goo | 50, gelatinous_goo | 50, gelatinous_goo
+70, gelatinous_goo | 70, gelatinous_goo | 70, gelatinous_goo | 70, gelatinous_goo | 70, gelatinous_goo
 ---
 Mimic
 75
@@ -28,7 +28,7 @@ Mimic
 ATTACK:5-15
 rare
 50-100
-40, potion_mod_heal, potion_mod_heal, potion_mod_heal, potion_maj_heal
+40, potion_mod_heal, potion_mod_heal | 40, potion_mod_heal, potion_maj_heal
 ---
 Chaos
 5

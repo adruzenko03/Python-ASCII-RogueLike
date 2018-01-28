@@ -48,13 +48,13 @@ class Battlescreen(Frame):
 
         self.sb1 = Scrollbar(self)
         self.sb1.grid(row=1, column=1, rowspan=3, sticky=NS)
-        self.items = Listbox(self, width=28, height=5, yscrollcommand=self.sb1.set, font="fixedsys")
+        self.items = Listbox(self, width=28, height=6, yscrollcommand=self.sb1.set, font="fixedsys")
         self.items.grid(row=1, column=2, columnspan=2, rowspan=3)
         for x in self.player.inventory:
             self.items.insert(END, x.name)
         self.sb1["command"] = self.items.yview
 
-        self.combatlog = Text(self, width=28, height=5)
+        self.combatlog = Text(self, width=28, height=6, font="fixedsys", wrap=WORD)
         self.combatlog.grid(row=5, column=2, columnspan=2, rowspan=3)
 
         self.useb = Button(self, text=" USE ", font="fixedsys", command=self.use)
@@ -77,8 +77,14 @@ class Battlescreen(Frame):
             self.equipb.destroy()
             if self.enemy.maxhp == 0:
                 self.go_backb.destroy()
+                self.combatlog.insert(INSERT, "-The " + self.enemy.name + " attacks with their " + self.enemy.weapon.name + " and slays Bup!")
             self.dieb = Button(self, text="GAME OVER", font="fixedsys", command=self.player_die)
             self.dieb.grid(row=4, column=2, columnspan=2)
+        else:
+            if self.enemy.weapon.name == "Unarmed Attack":
+                self.combatlog.insert(INSERT, "-The " + self.enemy.name + " attacks and deals " + str(enemydamage) + " damage!")
+            else:
+                self.combatlog.insert(INSERT, "-The " + self.enemy.name + " attacks with their " + self.enemy.weapon.name + " and deals " + str(enemydamage) + " damage!")
         self.playerhp["text"] = str(self.player.hp) + "/" + str(self.pmh)
 
     def use(self):
@@ -90,10 +96,15 @@ class Battlescreen(Frame):
             if self.player.inventory[index].type == "potion":
                 self.player.hp += self.player.inventory[index].output
                 if self.player.hp >= 100:
+                    regain = self.player.inventory[index].output - (self.player.hp - 100)
                     self.player.hp = 100
+                else:
+                    regain = self.player.inventory[index].output
+                self.combatlog.delete(0.0, END)
+                self.combatlog.insert(INSERT, "-Bup used the " + self.player.inventory[index].name + " and regained " + str(regain) + " health!\n")
                 del (self.player.inventory[index])
                 self.items.destroy()
-                self.items = Listbox(self, width=28, height=5, yscrollcommand=self.sb1.set, font="fixedsys")
+                self.items = Listbox(self, width=28, height=6, yscrollcommand=self.sb1.set, font="fixedsys")
                 self.items.grid(row=1, column=2, columnspan=2, rowspan=3)
                 for x in self.player.inventory:
                     self.items.insert(END, x.name)
@@ -114,8 +125,12 @@ class Battlescreen(Frame):
                     self.go_backb = Button(self, text="Go Back", font="fixedsys", command=self.go_back)
                     self.go_backb.grid(row=4, column=2, columnspan=2)
                     self.enemyhp["text"] = self.enemy.maxhp
+                    self.combatlog.delete(0.0, END)
+                    self.combatlog.insert(INSERT, "-Bup attacked with the " + self.player.equipped.name + " and slayed the " + self.enemy.name + "!\n")
                 else:
                     self.enemyhp["text"] = self.enemy.maxhp
+                    self.combatlog.delete(0.0, END)
+                    self.combatlog.insert(INSERT, "-Bup attacked with the " + self.player.equipped.name + " and dealt " + str(playerdamage) + " damage!\n")
                     self.enemyattack()
 
         except:
@@ -132,8 +147,12 @@ class Battlescreen(Frame):
                 self.go_backb = Button(self, text="Go Back", font="fixedsys", command=self.go_back)
                 self.go_backb.grid(row=4, column=2, columnspan=2)
                 self.enemyhp["text"] = str(self.enemy.maxhp) + "/" + str(self.emh)
+                self.combatlog.delete(0.0, END)
+                self.combatlog.insert(INSERT, "-Bup attacked with the " + self.player.equipped.name + " and slayed the " + self.enemy.name + "!\n")
             else:
                 self.enemyhp["text"] = str(self.enemy.maxhp) + "/" + str(self.emh)
+                self.combatlog.delete(0.0, END)
+                self.combatlog.insert(INSERT, "-Bup attacked with the " + self.player.equipped.name + " and dealt " + str(playerdamage) + " damage!\n")
                 self.enemyattack()
 
     def equip(self):
