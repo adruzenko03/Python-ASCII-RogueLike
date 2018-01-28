@@ -397,52 +397,45 @@ class Mainscreen(Frame):
                 for a in range(0, len(self.floor)-1):
                     for b in range(0, len(self.floor[0])-1):
                         try:
-                            if self.floor[a][b] == "Ö":
-                                if self.player_x-8 <= a <= self.player_x+8 and self.player_y-8 <= b <= self.player_y+8:
-                                    if a == self.player_x:
-                                        if b < self.player_y:
-                                            if self.floor[a][b+1] == " ":
-                                                self.floor[a][b] = " "
-                                                self.floor[a][b+1] = "Ö"
-                                        if b > self.player_y:
-                                            if self.floor[a][b-1] == " ":
-                                                self.floor[a][b] = " "
-                                                self.floor[a][b-1] = "Ö"
-                                        self.print_screen()
-                                        sleep(0.2)
-                                    elif b == self.player_y:
-                                        if a < self.player_x:
-                                            if self.floor[a+1][b] == " ":
-                                                self.floor[a][b] = " "
-                                                self.floor[a+1][b] = "Ö"
-                                        if a > self.player_x:
-                                            if self.floor[a-1][b] == " ":
-                                                self.floor[a][b] = " "
-                                                self.floor[a-1][b] = "Ö"
-                                        self.print_screen()
-                                        sleep(0.2)
-                                    elif a < self.player_x and b < self.player_y:
-                                        if self.floor[a + 1][b + 1] == " " and (self.floor[a+1][b] == " " or self.floor[a][b+1] == " "):
-                                            self.floor[a][b] = " "
-                                            self.floor[a + 1][b + 1] = "Ö"
-                                            self.print_screen()
-                                            sleep(0.2)
-                                    elif a > self.player_x and b > self.player_y:
-                                        if self.floor[a - 1][b - 1] == " " and (self.floor[a-1][b] == " " or self.floor[a][b-1] == " "):
-                                            self.floor[a][b] = " "
-                                            self.floor[a - 1][b - 1] = "Ö"
-                                            self.print_screen()
-                                            sleep(0.2)
-                                    elif a > self.player_x and b < self.player_y:
-                                        if self.floor[a - 1][b + 1] == " " and (self.floor[a-1][b] == " " or self.floor[a][b+1] == " "):
-                                            self.floor[a][b] = " "
-                                            self.floor[a - 1][b + 1] = "Ö"
-                                            sleep(0.2)
-                                    elif a < self.player_x and b > self.player_y:
-                                        if self.floor[a + 1][b - 1] == " " and (self.floor[a+1][b] == " " or self.floor[a][b-1] == " "):
-                                            self.floor[a][b] = " "
-                                            self.floor[a + 1][b - 1] = "Ö"
-                                            sleep(0.2)
+                            if self.floor[a][b] == "Ö" and self.player_x-8 <= a <= self.player_x+8 and self.player_y-8 <= b <= self.player_y+8:
+                                if a == self.player_x:
+                                    if b < self.player_y and self.floor[a][b+1] == " ":
+                                        self.floor[a][b] = " "
+                                        self.floor[a][b+1] = "Ö"
+                                    if b > self.player_y and self.floor[a][b-1] == " ":
+                                        self.floor[a][b] = " "
+                                        self.floor[a][b-1] = "Ö"
+                                    self.print_screen()
+                                    sleep(0.2)
+                                elif b == self.player_y:
+                                    if a < self.player_x and self.floor[a+1][b] == " ":
+                                        self.floor[a][b] = " "
+                                        self.floor[a+1][b] = "Ö"
+                                    if a > self.player_x and self.floor[a-1][b] == " ":
+                                        self.floor[a][b] = " "
+                                        self.floor[a-1][b] = "Ö"
+                                    self.print_screen()
+                                    sleep(0.2)
+                                elif a < self.player_x and b < self.player_y and self.floor[a + 1][b + 1] == " " and (self.floor[a+1][b] == " " or self.floor[a][b+1] == " "):
+                                    self.floor[a][b] = " "
+                                    self.floor[a + 1][b + 1] = "Ö"
+                                    self.print_screen()
+                                    sleep(0.2)
+                                elif a > self.player_x and b > self.player_y and self.floor[a - 1][b - 1] == " " and (self.floor[a-1][b] == " " or self.floor[a][b-1] == " "):
+                                    self.floor[a][b] = " "
+                                    self.floor[a - 1][b - 1] = "Ö"
+                                    self.print_screen()
+                                    sleep(0.2)
+                                elif a > self.player_x and b < self.player_y and self.floor[a - 1][b + 1] == " " and (self.floor[a-1][b] == " " or self.floor[a][b+1] == " "):
+                                    self.floor[a][b] = " "
+                                    self.floor[a - 1][b + 1] = "Ö"
+                                    self.print_screen()
+                                    sleep(0.2)
+                                elif a < self.player_x and b > self.player_y and self.floor[a + 1][b - 1] == " " and (self.floor[a+1][b] == " " or self.floor[a][b-1] == " "):
+                                    self.floor[a][b] = " "
+                                    self.floor[a + 1][b - 1] = "Ö"
+                                    self.print_screen()
+                                    sleep(0.2)
                         except:
                             pass
             else:
