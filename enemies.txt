@@ -32,8 +32,8 @@ rare
 ---
 Chaos
 5
-5
-ATTACK:25-35
+500
+ATTACK:65-100
 rare
 1-100
 50, potion_mod_heal | 50, potion_mod_heal, potion_maj_heal
