@@ -40,9 +40,9 @@ class Inventoryscreen(Frame):
 
         self.goback = Button(self, text="GO BACK", font="fixedsys", bg="#8B4513", activebackground="#633310", command=self.go_back)
         self.goback.grid(row=4, column=0)
-        self.use = Button(self, text="USE", font="fixedsys", bg="#8B4513", activebackground="#633310", command=self.use_item)
+        self.use = Button(self, text="  USE  ", font="fixedsys", bg="#8B4513", activebackground="#633310", command=self.use_item)
         self.use.grid(row=5, column=0)
-        self.equip = Button(self, text="EQUIP", font="fixedsys", bg="#8B4513", activebackground="#633310", command=self.equip_item)
+        self.equip = Button(self, text=" EQUIP ", font="fixedsys", bg="#8B4513", activebackground="#633310", command=self.equip_item)
         self.equip.grid(row=6, column=0)
 
     def show_desc(self, event):
@@ -57,8 +57,8 @@ class Inventoryscreen(Frame):
         index = int(self.items.curselection()[0])
         if self.player.inventory[index].type == "potion":
             self.player.hp += self.player.inventory[index].output
-            if self.player.hp >= 100:
-                self.player.hp = 100
+            if self.player.hp >= self.player.maxhealth:
+                self.player.hp = self.player.maxhealth
             del(self.player.inventory[index])
             self.items.destroy()
             self.items = Listbox(self, width=28, height=10, yscrollcommand=self.sb.set, font="fixedsys")

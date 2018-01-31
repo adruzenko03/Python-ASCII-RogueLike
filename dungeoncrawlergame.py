@@ -10,9 +10,11 @@ class Player(object):
 
     def __init__(self, maxhealth, money=0):
         self.hp = maxhealth
+        self.maxhealth = maxhealth
         self.money = money
         self.inventory = []
         self.equipped = None
+
 
 class Enemythread(Thread):
 
@@ -21,7 +23,7 @@ class Enemythread(Thread):
 
 class Mainscreen(Frame):
 
-    def __init__(self, master, endo, bat, openinv, level=1, player=None, x=None, y=None, floor=None):
+    def __init__(self, master, endo, bat, openinv, openshp, level=1, player=None, x=None, y=None, floor=None):
         super().__init__(master)
         self.grid()
         if player == None:
@@ -33,6 +35,7 @@ class Mainscreen(Frame):
         self.player_y = y
         self.floor = floor
         self.openinv = openinv
+        self.openshp = openshp
         self.create_widgets()
         self.endo = endo
         self.bat = bat
@@ -107,6 +110,9 @@ class Mainscreen(Frame):
                 #self.message_leg("up")
             elif self.floor[self.player_x - 1][self.player_y] == "X":
                 self.end_gme()
+            elif self.player_x != 1:
+                if self.floor[self.player_x - 2][self.player_y] == "$":
+                    self.open_shop_screen()
 
         if direction == "down":
 
@@ -173,7 +179,7 @@ class Mainscreen(Frame):
 
         # Loads room file and gets the starting room from that file
         roomfile = load_room_file("testroom.txt")
-        base = [deepcopy(roomfile[randint(1, len(roomfile)-1)]), 0, 0]
+        base = [deepcopy(roomfile[randint(2, len(roomfile)-1)]), 0, 0]
         # !!!! roomgrid.delete(0.0, END)!!!!
         # Adds the start room to the list
         roomgrid = [base]
@@ -196,28 +202,28 @@ class Mainscreen(Frame):
                         condition = False
                 # If there isn't a room there, it makes a room there
                 if condition == True:
-                    roomgrid.append([deepcopy(roomfile[randint(1, len(roomfile)-1)]), selectedroom[1], selectedroom[2] - 1])
+                    roomgrid.append([deepcopy(roomfile[randint(2, len(roomfile)-1)]), selectedroom[1], selectedroom[2] - 1])
 
             if direction == 2:
                 for x in roomgrid:
                     if selectedroom[1] == x[1] and selectedroom[2]+1 == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([deepcopy(roomfile[randint(1, len(roomfile)-1)]), selectedroom[1], selectedroom[2]+1])
+                    roomgrid.append([deepcopy(roomfile[randint(2, len(roomfile)-1)]), selectedroom[1], selectedroom[2]+1])
 
             if direction == 3:
                 for x in roomgrid:
                     if selectedroom[1]-1 == x[1] and selectedroom[2] == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([deepcopy(roomfile[randint(1, len(roomfile)-1)]), selectedroom[1]-1, selectedroom[2]])
+                    roomgrid.append([deepcopy(roomfile[randint(2, len(roomfile)-1)]), selectedroom[1]-1, selectedroom[2]])
 
             if direction == 4:
                 for x in roomgrid:
                     if selectedroom[1]+1 == x[1] and selectedroom[2] == x[2]:
                         condition = False
                 if condition == True:
-                    roomgrid.append([deepcopy(roomfile[randint(1, len(roomfile)-1)]), selectedroom[1]+1, selectedroom[2]])
+                    roomgrid.append([deepcopy(roomfile[randint(2, len(roomfile)-1)]), selectedroom[1]+1, selectedroom[2]])
 
             if condition == True:
                 maxrooms -= 1
@@ -262,6 +268,46 @@ class Mainscreen(Frame):
             if condition == True:
                 break
 
+        while self.level % 2 == 0:
+            # Selects a room and a direction
+            condition = True
+            selectedroom = choice(roomgrid)
+            direction = randint(1, 4)
+
+            # Based on the direction, it will place a room in that direction of the selected room
+            if direction == 1:
+                # Runs for each room in the list to make sure the room won't overlay another room
+                for x in roomgrid:
+                    if selectedroom[1] == x[1] and selectedroom[2] - 1 == x[2]:
+                        condition = False
+                # If there isn't a room there, it makes a room there
+                if condition == True:
+                    roomgrid.append([roomfile[1], selectedroom[1], selectedroom[2] - 1])
+
+            if direction == 2:
+                for x in roomgrid:
+                    if selectedroom[1] == x[1] and selectedroom[2] + 1 == x[2]:
+                        condition = False
+                if condition == True:
+                    roomgrid.append([roomfile[1], selectedroom[1], selectedroom[2] + 1])
+
+            if direction == 3:
+                for x in roomgrid:
+                    if selectedroom[1] - 1 == x[1] and selectedroom[2] == x[2]:
+                        condition = False
+                if condition == True:
+                    roomgrid.append([roomfile[1], selectedroom[1] - 1, selectedroom[2]])
+
+            if direction == 4:
+                for x in roomgrid:
+                    if selectedroom[1] + 1 == x[1] and selectedroom[2] == x[2]:
+                        condition = False
+                if condition == True:
+                    roomgrid.append([roomfile[1], selectedroom[1] + 1, selectedroom[2]])
+
+            if condition == True:
+                break
+
         # Creates the lowest number for the coordinates and the maximum number for the coordinates
         lowx = 0
         lowy = 0
@@ -287,7 +333,7 @@ class Mainscreen(Frame):
             x[2] -= lowy
 
         # Creates enemies
-        numofenemies = 2 + self.level
+        numofenemies = 3 + (self.level // 2)
 
         availablerooms = deepcopy(roomgrid)
 
@@ -555,6 +601,9 @@ class Mainscreen(Frame):
 
     def open_inv_screen(self):
         self.openinv(self.level, self.player, self.player_x, self.player_y, self.floor)
+
+    def open_shop_screen(self):
+        self.openshp(self.level, self.player, self.player_x, self.player_y, self.floor)
 
 
 # root = Tk()

@@ -15,7 +15,7 @@ class Battlescreen(Frame):
         self.player_x = x
         self.player_y = y
         self.floor = floor
-        self.pmh = 100
+        self.pmh = self.player.maxhealth
         self.grid()
         self.create_widgets()
 
@@ -95,9 +95,9 @@ class Battlescreen(Frame):
 
             if self.player.inventory[index].type == "potion":
                 self.player.hp += self.player.inventory[index].output
-                if self.player.hp >= 100:
-                    regain = self.player.inventory[index].output - (self.player.hp - 100)
-                    self.player.hp = 100
+                if self.player.hp >= self.pmh:
+                    regain = self.player.inventory[index].output - (self.player.hp - self.pmh)
+                    self.player.hp = self.pmh
                 else:
                     regain = self.player.inventory[index].output
                 self.combatlog.delete(0.0, END)

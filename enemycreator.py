@@ -16,7 +16,7 @@ class Enemy (object):
 
     def get_random_weapon(self):
         try:
-            self.weapon = deepcopy(Item("Unarmed Attack", "attack", "...", "weapon", [int(self.weaponchoices[1]), int(self.weaponchoices[2])]))
+            self.weapon = deepcopy(Item("Unarmed Attack", "attack", "...", "weapon", 0, None, [int(self.weaponchoices[1]), int(self.weaponchoices[2])]))
         except:
             w = choice(self.weaponchoices)
             itemfile = load_item_file("items.txt")

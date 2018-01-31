@@ -2,60 +2,88 @@ Rusty Knife
 rusty_knife
 A rusty, decrepit dagger that deals 1 to 8 damage. The blade seems to be a little loose.
 weapon
+10
+2
 1-8
 ---
 Knife
 knife
-A shiny, new knife that deals 5 to 10 damage. The blade does not seem to be a little loose
+A shiny, new knife that deals 5 to 10 damage. Nearly any other weapon is better than this...
 weapon
+25
+2
 5-10
 ---
 Sword
 sword
-A well-crafted blade that deals 20 to 25 damage. Can be bought online for $50. There's no wifi here though...
+A well-crafted blade that deals 20 to 25 damage. Using it makes you feel like a Medieval knight.
 weapon
+70
+6
 20-25
 ---
 Frying Pan
 frying_pan
 A heavy frying pan that deals 5 to 15 damage. It doesn't appear to be clean either.
 weapon
+25
+4
 5-15
 ---
 Baseball Bat
 baseball_bat
 An old, wooden baseball bat that deals 15 to 20 damage. Wonder how it got down here though...
 weapon
+25
+4
 15-20
 ---
 Hatchet
 hatchet
 A red, sturdy axe that deals 10 to 25 damage. It was designed to chop wood, but it should be just as good at chopping enemies.
 weapon
+50
+6
 10-25
 ---
 Potion of Minor Healing
 potion_min_heal
 A small, bandaged vial of healing elixir that restores 20 health. It appears to be leaking... Yep, definitely leaking.
 potion
+70
+2
 20
 ---
 Potion of Moderate Healing
 potion_mod_heal
 A fair-sized flask of healing elixir that restores 50 health. It tastes like grape medicine.
 potion
+135
+4
 50
 ---
 Potion of Major Healing
 potion_maj_heal
-A large bottle containing a healing elixir that restores a whopping 80 health.
+A large bottle containing a healing elixir that restores a whopping 80 health. It reeks an herbal miasma.
 potion
+200
+6
 80
+---
+Potion of Monstrous Healing
+potion_mon_heal
+A jug of healing elixir that restores 120 health. You don't know what it's made of, but it's REALLY good.
+potion
+275
+10
+120
 ---
 Gelatinous Goo
 gelatinous_goo
 A blob of Gelatinous Cube goo... it feels weird and only restores 15 health, but generally comes in ample supply.
 potion
+20
+never
 15
 ---
 STOP

@@ -6,6 +6,14 @@ verycommon
 1-10
 50, potion_min_heal
 ---
+Spider
+30
+1
+ATTACK:5-15
+verycommon
+5-15
+50, potion_min_heal
+---
 Wraith
 45
 3
@@ -31,9 +39,9 @@ rare
 40, potion_mod_heal, potion_mod_heal | 40, potion_mod_heal, potion_maj_heal
 ---
 Chaos
+25
 5
-5
-ATTACK:25-35
+ATTACK:20-30
 rare
 1-100
 50, potion_mod_heal | 50, potion_mod_heal, potion_maj_heal
@@ -47,11 +55,11 @@ rare
 25, potion_maj_heal | 50, potion_min_heal | 75, potion_min_heal
 ---
 Minotaur
-200
+150
 5
 sword
 veryrare
-50-100
-100, potion_maj_heal
+200-250
+100, potion_maj_heal | 50, potion_maj_heal
 ---
 STOP
