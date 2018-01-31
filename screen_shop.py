@@ -163,5 +163,6 @@ class Shopscreen(Frame):
                     self.playeritems.insert(END, x.name)
         self.money_display["text"] = " ¢ " + str(self.player.money) + " "
 
+
     def go_back(self):
         self.back(self.level, self.player, self.player_x, self.player_y, self.floor)
