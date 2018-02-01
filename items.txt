@@ -14,8 +14,16 @@ weapon
 2
 5-10
 ---
-Sword
-sword
+Shortsword
+shortsword
+A trusty starter weapon. It deals 12 to 15 damage and is generally inexpensive, making it the best beginner's weapon.
+weapon
+40
+4
+12-15
+---
+Longsword
+longsword
 A well-crafted blade that deals 20 to 25 damage. Using it makes you feel like a Medieval knight.
 weapon
 70

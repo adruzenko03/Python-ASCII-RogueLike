@@ -6,7 +6,7 @@ from time import *
 
 class Battlescreen(Frame):
 
-    def __init__(self, master, next, causedeath, level, player, x, y, floor):
+    def __init__(self, master, next, causedeath, level, player, x, y, floor, shopitems):
         super().__init__(master)
         self.resume = next
         self.die = causedeath
@@ -15,6 +15,7 @@ class Battlescreen(Frame):
         self.player_x = x
         self.player_y = y
         self.floor = floor
+        self.shopitems = shopitems
         self.pmh = self.player.maxhealth
         self.grid()
         self.create_widgets()
@@ -124,11 +125,11 @@ class Battlescreen(Frame):
                     self.enemy.get_random_drops(self.player)
                     self.go_backb = Button(self, text="Go Back", font="fixedsys", command=self.go_back)
                     self.go_backb.grid(row=4, column=2, columnspan=2)
-                    self.enemyhp["text"] = self.enemy.maxhp
+                    self.enemyhp["text"] = str(self.enemy.maxhp)+"/"+self.emh
                     self.combatlog.delete(0.0, END)
                     self.combatlog.insert(INSERT, "-Bup attacked with the " + self.player.equipped.name + " and slayed the " + self.enemy.name + "!\n")
                 else:
-                    self.enemyhp["text"] = self.enemy.maxhp
+                    self.enemyhp["text"] = str(self.enemy.maxhp)+"/"+self.emh
                     self.combatlog.delete(0.0, END)
                     self.combatlog.insert(INSERT, "-Bup attacked with the " + self.player.equipped.name + " and dealt " + str(playerdamage) + " damage!\n")
                     self.enemyattack()
@@ -170,7 +171,7 @@ class Battlescreen(Frame):
             return None
 
     def go_back(self):
-        self.resume(self.level, self.player, self.player_x, self.player_y, self.floor, self.enemy)
+        self.resume(self.level, self.player, self.player_x, self.player_y, self.floor, self.shopitems, self.enemy)
 
     def player_die(self):
         self.die()

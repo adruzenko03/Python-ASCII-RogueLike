@@ -2,7 +2,7 @@ from tkinter import *
 
 class Inventoryscreen(Frame):
 
-    def __init__(self, master, back, level, player, x, y, floor):
+    def __init__(self, master, back, level, player, x, y, floor, shopitems):
         super().__init__(master)
         self.back = back
         self.level = level
@@ -10,6 +10,7 @@ class Inventoryscreen(Frame):
         self.player_x = x
         self.player_y = y
         self.floor = floor
+        self.shopitems = shopitems
         self.create_widgets()
         self.grid()
 
@@ -17,7 +18,7 @@ class Inventoryscreen(Frame):
         Canvas(self, bg="#cc7130", width=310, height=360, bd=0, highlightthickness=0).grid(row=0, column=0, columnspan=3, rowspan=7, sticky=NW)
 
         self.name = Label(self, text="Bup", font="fixedsys", bg="#cc7130").grid(row=0, column=0, rowspan=3)
-        self.health_display = Label(self, text=" ❤ " + str(self.player.hp) + " ", font="fixedsys", bg="#960c0c", width=11, relief=SUNKEN)
+        self.health_display = Label(self, text=" ❤ " + str(self.player.hp) + "/" + str(self.player.maxhealth) + " ", font="fixedsys", bg="#960c0c", width=11, relief=SUNKEN)
         self.health_display.grid(row=0, column=1)
         self.money_display = Label(self, text=" ¢ " + str(self.player.money) + " ", font="fixedsys", bg="#ce9d0a", width=11, relief=SUNKEN)
         self.money_display.grid(row=1, column=1)
@@ -66,7 +67,7 @@ class Inventoryscreen(Frame):
             self.items.bind("<<ListboxSelect>>", self.show_desc)
             for x in self.player.inventory:
                 self.items.insert(END, x.name)
-            self.health_display["text"] = " ❤ " + str(self.player.hp) + " "
+            self.health_display["text"] = " ❤ " + str(self.player.hp) + "/" + str(self.player.maxhealth) + " "
 
     def equip_item(self):
         index = int(self.items.curselection()[0])
@@ -75,4 +76,4 @@ class Inventoryscreen(Frame):
             self.equip_display["text"] = " Item: " + str(self.player.equipped.name) + " "
 
     def go_back(self):
-        self.back(self.level, self.player, self.player_x, self.player_y, self.floor)
+        self.back(self.level, self.player, self.player_x, self.player_y, self.floor, self.shopitems)

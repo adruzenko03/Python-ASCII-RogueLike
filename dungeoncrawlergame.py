@@ -1,5 +1,6 @@
 from tkinter import *
 from roomcreator import *
+from itemcreator import *
 from random import *
 from copy import *
 from time import *
@@ -8,10 +9,14 @@ from threading import *
 
 class Player(object):
 
-    def __init__(self, maxhealth, money=0):
+    def __init__(self, maxhealth, money=0, messages=""):
         self.hp = maxhealth
         self.maxhealth = maxhealth
         self.money = money
+        if messages == "":
+            self.messages = "█████████████████████████\nFLOOR 1"
+        else:
+            self.messages = messages
         self.inventory = []
         self.equipped = None
 
@@ -23,7 +28,7 @@ class Enemythread(Thread):
 
 class Mainscreen(Frame):
 
-    def __init__(self, master, endo, bat, openinv, openshp, level=1, player=None, x=None, y=None, floor=None):
+    def __init__(self, master, endo, bat, openinv, openshp, level=1, player=None, x=None, y=None, floor=None, shopitems=None):
         super().__init__(master)
         self.grid()
         if player == None:
@@ -34,6 +39,20 @@ class Mainscreen(Frame):
         self.player_x = x
         self.player_y = y
         self.floor = floor
+        if shopitems == None and self.level % 2 == 0:
+            self.shopitems = []
+            self.itemfile = load_item_file("items.txt")
+            for x in self.itemfile:
+                if x.shoplevel != None:
+                    if x.shoplevel <= self.level:
+                        if x.type == "potion":
+                            self.shopitems.append(x)
+                            self.shopitems.append(x)
+                            self.shopitems.append(x)
+                        elif x.type == "weapon":
+                            self.shopitems.append(x)
+        else:
+            self.shopitems = shopitems
         self.openinv = openinv
         self.openshp = openshp
         self.create_widgets()
@@ -69,9 +88,11 @@ class Mainscreen(Frame):
         self.message_log = Text(self, width=25, height=17, wrap=WORD, yscrollcommand=self.message_log_sb.set)
         self.message_log.grid(row=2, column=4, rowspan=6)
         self.message_log_sb["command"] = self.message_log.yview
+        self.message_log.insert(0.0, self.player.messages)
+
 
         # Displays
-        self.health_display = Label(self, text=" ❤ "+str(self.player.hp)+" ", font="fixedsys", bg="#960c0c", width=11, relief=SUNKEN)
+        self.health_display = Label(self, text=" ❤ "+str(self.player.hp)+"/"+str(self.player.maxhealth)+" ", font="fixedsys", bg="#960c0c", width=11, relief=SUNKEN)
         self.health_display.grid(row=5, column=0, columnspan=3)
         self.money_display = Label(self, text=" ¢ " + str(self.player.money) + " ", font="fixedsys", bg="#ce9d0a", width=11, relief=SUNKEN)
         self.money_display.grid(row=6, column=0, columnspan=3)
@@ -166,14 +187,17 @@ class Mainscreen(Frame):
 
         self.print_screen()
 
-        if self.floor[self.player_x - 1][self.player_y] == "Ö" or self.floor[self.player_x + 1][self.player_y] == "Ö" or self.floor[self.player_x][self.player_y - 1] == "Ö" or self.floor[self.player_x][self.player_y + 1]== "Ö":
-            self.destroy()
-            self.do_battle()
+        self.check_for_enemies()
 
         """ self.playarea["state"] = NORMAL
         self.playarea.delete(0.0, END)
         self.playarea.insert(0.0, s)
         self.playarea["state"] = DISABLED """
+
+    def check_for_enemies(self):
+        if self.floor[self.player_x - 1][self.player_y] == "Ö" or self.floor[self.player_x + 1][self.player_y] == "Ö" or self.floor[self.player_x][self.player_y - 1] == "Ö" or self.floor[self.player_x][self.player_y + 1]== "Ö":
+            self.destroy()
+            self.do_battle()
 
     def assemble_rooms(self):
 
@@ -452,6 +476,7 @@ class Mainscreen(Frame):
                                         self.floor[a][b] = " "
                                         self.floor[a][b-1] = "Ö"
                                     self.print_screen()
+                                    self.check_for_enemies()
                                     sleep(0.2)
                                 elif b == self.player_y:
                                     if a < self.player_x and self.floor[a+1][b] == " ":
@@ -461,26 +486,31 @@ class Mainscreen(Frame):
                                         self.floor[a][b] = " "
                                         self.floor[a-1][b] = "Ö"
                                     self.print_screen()
+                                    self.check_for_enemies()
                                     sleep(0.2)
                                 elif a < self.player_x and b < self.player_y and self.floor[a + 1][b + 1] == " " and (self.floor[a+1][b] == " " or self.floor[a][b+1] == " "):
                                     self.floor[a][b] = " "
                                     self.floor[a + 1][b + 1] = "Ö"
                                     self.print_screen()
+                                    self.check_for_enemies()
                                     sleep(0.2)
                                 elif a > self.player_x and b > self.player_y and self.floor[a - 1][b - 1] == " " and (self.floor[a-1][b] == " " or self.floor[a][b-1] == " "):
                                     self.floor[a][b] = " "
                                     self.floor[a - 1][b - 1] = "Ö"
                                     self.print_screen()
+                                    self.check_for_enemies()
                                     sleep(0.2)
                                 elif a > self.player_x and b < self.player_y and self.floor[a - 1][b + 1] == " " and (self.floor[a-1][b] == " " or self.floor[a][b+1] == " "):
                                     self.floor[a][b] = " "
                                     self.floor[a - 1][b + 1] = "Ö"
                                     self.print_screen()
+                                    self.check_for_enemies()
                                     sleep(0.2)
                                 elif a < self.player_x and b > self.player_y and self.floor[a + 1][b - 1] == " " and (self.floor[a+1][b] == " " or self.floor[a][b-1] == " "):
                                     self.floor[a][b] = " "
                                     self.floor[a + 1][b - 1] = "Ö"
                                     self.print_screen()
+                                    self.check_for_enemies()
                                     sleep(0.2)
                         except:
                             pass
@@ -493,13 +523,13 @@ class Mainscreen(Frame):
 
         s = ""
 
-        if self.player_x <= 7:
+        if self.player_x <= 6:
             for a in range(0, 13):
                 if len(self.floor[0]) <= 49:
                     for b in self.floor[a]:
                         s += b
                     s += "\n"
-                elif self.player_y <= 25:
+                elif self.player_y <= 24:
                     for b in range(0, 49):
                         s += self.floor[a][b]
                     s += "\n"
@@ -517,12 +547,12 @@ class Mainscreen(Frame):
                 s += "\n" """
 
         elif self.player_x >= len(self.floor)-7:
-            for a in range(len(self.floor)-13, len(self.floor)-1):
+            for a in range(len(self.floor)-14, len(self.floor)-1):
                 if len(self.floor[0]) <= 49:
                     for b in self.floor[a]:
                         s += b
                     s += "\n"
-                elif self.player_y <= 25:
+                elif self.player_y <= 24:
                     for b in range(0, 49):
                         s += self.floor[a][b]
                     s += "\n"
@@ -541,7 +571,7 @@ class Mainscreen(Frame):
                     for b in self.floor[a]:
                         s += b
                     s += "\n"
-                elif self.player_y <= 25:
+                elif self.player_y <= 24:
                     for b in range(0, 49):
                         s += self.floor[a][b]
                     s += "\n"
@@ -590,20 +620,23 @@ class Mainscreen(Frame):
         money = randint(int(enemy.moneydrop[0]), int(enemy.moneydrop[1]))
         self.player.money += money
         self.money_display["text"] = " ¢ " + str(self.player.money) + " "
-        self.message_log.insert(0.0, "-Bup got " + str(money) + " gold for killing the " + enemy.name + "!")
+        self.player.messages += "\n-Bup got " + str(money) + " gold for killing the " + enemy.name + "!\n\n\n\n"
+        self.message_log.delete(0.0, END)
+        self.message_log.insert(0.0, self.player.messages)
+        self.message_log.yview_pickplace("end")
 
     def end_gme(self):
         self.endo(self.level, self.player)
 
     def do_battle(self):
         self.thr.con = False
-        self.bat(self.level, self.player, self.player_x, self.player_y, self.floor)
+        self.bat(self.level, self.player, self.player_x, self.player_y, self.floor, self.shopitems)
 
     def open_inv_screen(self):
-        self.openinv(self.level, self.player, self.player_x, self.player_y, self.floor)
+        self.openinv(self.level, self.player, self.player_x, self.player_y, self.floor, self.shopitems)
 
     def open_shop_screen(self):
-        self.openshp(self.level, self.player, self.player_x, self.player_y, self.floor)
+        self.openshp(self.level, self.player, self.player_x, self.player_y, self.floor, self.shopitems)
 
 
 # root = Tk()

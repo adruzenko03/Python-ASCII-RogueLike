@@ -1,7 +1,7 @@
 Skeleton
 20
 2
-rusty_knife, rusty_knife, knife, knife, sword, sword, hatchet
+rusty_knife, rusty_knife, knife, knife, longsword, longsword, hatchet
 verycommon
 1-10
 50, potion_min_heal
@@ -17,7 +17,7 @@ verycommon
 Wraith
 45
 3
-knife, knife, sword, sword
+knife, knife, shortsword, shortsword, longsword
 uncommon
 15-45
 60, potion_mod_heal | 25, potion_mod_heal
@@ -49,7 +49,7 @@ rare
 Maddened Traveller
 50
 5
-sword, sword, knife, frying_pan, baseball_bat, hatchet, hatchet
+broadsword, broadsword, longsword, longsword, knife, frying_pan, baseball_bat, hatchet, hatchet
 rare
 200-250
 25, potion_maj_heal | 50, potion_min_heal | 75, potion_min_heal
@@ -57,7 +57,7 @@ rare
 Minotaur
 150
 5
-sword
+longsword
 veryrare
 200-250
 100, potion_maj_heal | 50, potion_maj_heal

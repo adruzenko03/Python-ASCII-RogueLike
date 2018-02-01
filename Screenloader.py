@@ -29,7 +29,7 @@ class Put_Everything_Together(object):
         self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, self.open_shop)
         self.itemlist = load_item_file("items.txt")
         for i in self.itemlist:
-            if i.id == "hatchet":
+            if i.id == "shortsword":
                 self.game.player.inventory.append(i)
                 self.game.player.equipped = self.game.player.inventory[0]
             if i.id == "potion_min_heal":
@@ -37,41 +37,44 @@ class Put_Everything_Together(object):
         self.game.assemble_rooms()
         self.game.create_enemy_movement()
 
-    def resume_main_game(self, level, player, x, y, floor, enemy):
+    def resume_main_game(self, level, player, x, y, floor, shopitems, enemy):
         self.cs = "game"
         self.battle_scene.destroy()
         self.root.title("DUNGEON")
-        self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, self.open_shop, level, player, x, y, floor)
+        self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, self.open_shop, level, player, x, y, floor, shopitems)
         self.game.add_moneydrop(enemy)
+        self.game.message_log.see("end")
         self.game.kill_nearby_enemies()
         self.game.create_enemy_movement()
         self.game.print_screen()
 
-    def open_inventory(self, level, player, x, y, floor):
+    def open_inventory(self, level, player, x, y, floor, shopitems):
         self.cs = "inventory"
         self.game.destroy()
         self.root.title("INVENTORY")
-        self.inv = Inventoryscreen(self.root, self.close_inventory, level, player, x, y, floor)
+        self.inv = Inventoryscreen(self.root, self.close_inventory, level, player, x, y, floor, shopitems)
 
-    def close_inventory(self, level, player, x, y, floor):
+    def close_inventory(self, level, player, x, y, floor, shopitems):
         self.cs = "game"
         self.inv.destroy()
         self.root.title("DUNGEON")
-        self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, self.open_shop, level, player, x, y, floor)
+        self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, self.open_shop, level, player, x, y, floor, shopitems)
+        self.game.message_log.see("end")
         self.game.create_enemy_movement()
         self.game.print_screen()
 
-    def open_shop(self, level, player, x, y, floor):
+    def open_shop(self, level, player, x, y, floor, shopitems):
         self.cs = "shop"
         self.game.destroy()
         self.root.title("SHOP")
-        self.shop = Shopscreen(self.root, self.close_shop, level, player, x, y, floor)
+        self.shop = Shopscreen(self.root, self.close_shop, level, player, x, y, floor, shopitems)
 
-    def close_shop(self, level, player, x, y, floor):
+    def close_shop(self, level, player, x, y, floor, shopitems):
         self.cs = "game"
         self.shop.destroy()
         self.root.title("DUNGEON")
-        self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, self.open_shop, level, player, x, y, floor)
+        self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, self.open_shop, level, player, x, y, floor, shopitems)
+        self.game.message_log.see("end")
         self.game.create_enemy_movement()
         self.game.print_screen()
 
@@ -84,11 +87,11 @@ class Put_Everything_Together(object):
         player.hp += 5
         self.enend = Winscreen(self.root, self.next_level, level, player)
 
-    def start_battle(self, level, player, x, y, floor):
+    def start_battle(self, level, player, x, y, floor, shopitems):
         self.cs = "battle"
         self.game.destroy()
         self.root.title("BATTLE")
-        self.battle_scene = Battlescreen(self.root, self.resume_main_game, self.game_over, level, player, x, y, floor)
+        self.battle_scene = Battlescreen(self.root, self.resume_main_game, self.game_over, level, player, x, y, floor, shopitems)
 
     def game_over(self):
         self.cs = "death"
@@ -99,7 +102,9 @@ class Put_Everything_Together(object):
         self.cs = "game"
         self.enend.destroy()
         self.root.title("DUNGEON")
+        player.messages += "\n█████████████████████████\nFLOOR "+str(level)
         self.game = Mainscreen(self.root, self.end_level, self.start_battle, self.open_inventory, self.open_shop, level, player)
+        self.game.message_log.see("end")
         self.game.assemble_rooms()
         self.game.create_enemy_movement()
 
@@ -122,6 +127,8 @@ def right(event):
 def pressz(event):
     if gme.cs == "inventory":
         gme.inv.use_item()
+    elif gme.cs == "shop":
+        gme.shop.trade()
 
 def pressx(event):
     if gme.cs == "inventory":
@@ -132,6 +139,8 @@ def pressc(event):
         gme.game.open_inv_screen()
     elif gme.cs == "inventory":
         gme.inv.go_back()
+    elif gme.cs == "shop":
+        gme.shop.go_back()
 
 gme = Put_Everything_Together()
 gme.root.bind("<Up>", up)
