@@ -31,8 +31,12 @@ class Inventoryscreen(Frame):
         self.items = Listbox(self, width=28, height=10, yscrollcommand=self.sb.set, font="fixedsys")
         self.items.grid(row=3, column=1)
         self.items.bind("<<ListboxSelect>>", self.show_desc)
-        for x in self.player.inventory:
-            self.items.insert(END, x.name)
+        for x in range(0, len(self.player.inventory)):
+            self.items.insert(END, self.player.inventory[x].name)
+            if self.player.inventory[x].type == "potion":
+                self.items.itemconfig(x, {"fg":"#590000"})
+            elif self.player.inventory[x].type == "weapon":
+                self.items.itemconfig(x, {"fg":"#030042"})
 
         self.sb["command"] = self.items.yview
 
@@ -65,8 +69,12 @@ class Inventoryscreen(Frame):
             self.items = Listbox(self, width=28, height=10, yscrollcommand=self.sb.set, font="fixedsys")
             self.items.grid(row=3, column=1)
             self.items.bind("<<ListboxSelect>>", self.show_desc)
-            for x in self.player.inventory:
-                self.items.insert(END, x.name)
+            for x in range(0, len(self.player.inventory)):
+                self.items.insert(END, self.player.inventory[x].name)
+                if self.player.inventory[x].type == "potion":
+                    self.items.itemconfig(x, {"fg": "#590000"})
+                elif self.player.inventory[x].type == "weapon":
+                    self.items.itemconfig(x, {"fg": "#030042"})
             self.health_display["text"] = " ❤ " + str(self.player.hp) + "/" + str(self.player.maxhealth) + " "
 
     def equip_item(self):

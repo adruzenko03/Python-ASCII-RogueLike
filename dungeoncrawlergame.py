@@ -620,7 +620,7 @@ class Mainscreen(Frame):
         money = randint(int(enemy.moneydrop[0]), int(enemy.moneydrop[1]))
         self.player.money += money
         self.money_display["text"] = " ¢ " + str(self.player.money) + " "
-        self.player.messages += "\n-Bup got " + str(money) + " gold for killing the " + enemy.name + "!\n\n\n\n"
+        self.player.messages += "\n-Bup got " + str(money) + " gold for killing the " + enemy.name + "!"
         self.message_log.delete(0.0, END)
         self.message_log.insert(0.0, self.player.messages)
         self.message_log.yview_pickplace("end")

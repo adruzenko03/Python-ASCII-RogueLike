@@ -49,7 +49,7 @@ rare
 Maddened Traveller
 50
 5
-broadsword, broadsword, longsword, longsword, knife, frying_pan, baseball_bat, hatchet, hatchet
+shortsword, shortsword, longsword, longsword, knife, frying_pan, baseball_bat, hatchet, hatchet
 rare
 200-250
 25, potion_maj_heal | 50, potion_min_heal | 75, potion_min_heal

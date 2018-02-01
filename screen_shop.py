@@ -27,8 +27,12 @@ class Shopscreen(Frame):
         self.playeritems = Listbox(self, width=28, height=10, yscrollcommand=self.playersb.set, font="fixedsys")
         self.playeritems.grid(row=1, column=1, rowspan=3)
         self.playeritems.bind("<<ListboxSelect>>", self.show_player_desc)
-        for x in self.player.inventory:
-            self.playeritems.insert(END, x.name)
+        for x in range(0, len(self.player.inventory)):
+            self.playeritems.insert(END, self.player.inventory[x].name)
+            if self.player.inventory[x].type == "potion":
+                self.playeritems.itemconfig(x, {"fg": "#590000"})
+            elif self.player.inventory[x].type == "weapon":
+                self.playeritems.itemconfig(x, {"fg": "#030042"})
 
         self.playersb["command"] = self.playeritems.yview
 
@@ -38,8 +42,18 @@ class Shopscreen(Frame):
         self.shopitems = Listbox(self, width=28, height=10, yscrollcommand=self.shopsb.set, font="fixedsys")
         self.shopitems.grid(row=1, column=3, rowspan=3)
         self.shopitems.bind("<<ListboxSelect>>", self.show_shop_desc)
-        for x in self.shoplist:
-            self.shopitems.insert(END, x.name)
+        for x in range(0, len(self.shoplist)):
+            self.shopitems.insert(END, self.shoplist[x].name)
+            if self.shoplist[x].type == "potion":
+                if self.shoplist[x].price <= self.player.money:
+                    self.shopitems.itemconfig(x, {"fg": "#590000"})
+                else:
+                    self.shopitems.itemconfig(x, {"fg": "#353535"})
+            elif self.shoplist[x].type == "weapon":
+                if self.shoplist[x].price <= self.player.money:
+                    self.shopitems.itemconfig(x, {"fg": "#030042"})
+                else:
+                    self.shopitems.itemconfig(x, {"fg": "#353535"})
 
         self.shopsb["command"] = self.shopitems.yview
 
@@ -104,14 +118,28 @@ class Shopscreen(Frame):
                 self.playeritems = Listbox(self, width=28, height=10, yscrollcommand=self.playersb.set, font="fixedsys")
                 self.playeritems.grid(row=1, column=1, rowspan=3)
                 self.playeritems.bind("<<ListboxSelect>>", self.show_player_desc)
-                for x in self.player.inventory:
-                    self.playeritems.insert(END, x.name)
+                for x in range(0, len(self.player.inventory)):
+                    self.playeritems.insert(END, self.player.inventory[x].name)
+                    if self.player.inventory[x].type == "potion":
+                        self.playeritems.itemconfig(x, {"fg": "#590000"})
+                    elif self.player.inventory[x].type == "weapon":
+                        self.playeritems.itemconfig(x, {"fg": "#030042"})
                 del(self.shoplist[index])
                 self.shopitems.destroy()
                 self.shopitems = Listbox(self, width=28, height=10, yscrollcommand=self.shopsb.set, font="fixedsys")
                 self.shopitems.grid(row=1, column=3, rowspan=3)
-                for x in self.shoplist:
-                    self.shopitems.insert(END, x.name)
+                for x in range(0, len(self.shoplist)):
+                    self.shopitems.insert(END, self.shoplist[x].name)
+                    if self.shoplist[x].type == "potion":
+                        if self.shoplist[x].price <= self.player.money:
+                            self.shopitems.itemconfig(x, {"fg": "#590000"})
+                        else:
+                            self.shopitems.itemconfig(x, {"fg": "#353535"})
+                    elif self.shoplist[x].type == "weapon":
+                        if self.shoplist[x].price <= self.player.money:
+                            self.shopitems.itemconfig(x, {"fg": "#030042"})
+                        else:
+                            self.shopitems.itemconfig(x, {"fg": "#353535"})
                 self.shopitems.bind("<<ListboxSelect>>", self.show_shop_desc)
         elif action == "sell":
             if self.player.inventory[index].type == "weapon" and self.player.inventory[index].id == self.player.equipped.id:
@@ -125,8 +153,18 @@ class Shopscreen(Frame):
                     self.shopitems.destroy()
                     self.shopitems = Listbox(self, width=28, height=10, yscrollcommand=self.shopsb.set, font="fixedsys")
                     self.shopitems.grid(row=1, column=3, rowspan=3)
-                    for x in self.shoplist:
-                        self.shopitems.insert(END, x.name)
+                    for x in range(0, len(self.shoplist)):
+                        self.shopitems.insert(END, self.shoplist[x].name)
+                        if self.shoplist[x].type == "potion":
+                            if self.shoplist[x].price <= self.player.money:
+                                self.shopitems.itemconfig(x, {"fg": "#590000"})
+                            else:
+                                self.shopitems.itemconfig(x, {"fg": "#353535"})
+                        elif self.shoplist[x].type == "weapon":
+                            if self.shoplist[x].price <= self.player.money:
+                                self.shopitems.itemconfig(x, {"fg": "#030042"})
+                            else:
+                                self.shopitems.itemconfig(x, {"fg": "#353535"})
                     self.shopitems.bind("<<ListboxSelect>>", self.show_shop_desc)
                     del (self.player.inventory[index])
                     self.playeritems.destroy()
@@ -134,24 +172,42 @@ class Shopscreen(Frame):
                                                font="fixedsys")
                     self.playeritems.grid(row=1, column=1, rowspan=3)
                     self.playeritems.bind("<<ListboxSelect>>", self.show_player_desc)
-                    for x in self.player.inventory:
-                        self.playeritems.insert(END, x.name)
+                    for x in range(0, len(self.player.inventory)):
+                        self.playeritems.insert(END, self.player.inventory[x].name)
+                        if self.player.inventory[x].type == "potion":
+                            self.playeritems.itemconfig(x, {"fg": "#590000"})
+                        elif self.player.inventory[x].type == "weapon":
+                            self.playeritems.itemconfig(x, {"fg": "#030042"})
             else:
                 self.player.money += self.player.inventory[index].price
                 self.shoplist.append(self.player.inventory[index])
                 self.shopitems.destroy()
                 self.shopitems = Listbox(self, width=28, height=10, yscrollcommand=self.shopsb.set, font="fixedsys")
                 self.shopitems.grid(row=1, column=3, rowspan=3)
-                for x in self.shoplist:
-                    self.shopitems.insert(END, x.name)
+                for x in range(0, len(self.shoplist)):
+                    self.shopitems.insert(END, self.shoplist[x].name)
+                    if self.shoplist[x].type == "potion":
+                        if self.shoplist[x].price <= self.player.money:
+                            self.shopitems.itemconfig(x, {"fg": "#590000"})
+                        else:
+                            self.shopitems.itemconfig(x, {"fg": "#353535"})
+                    elif self.shoplist[x].type == "weapon":
+                        if self.shoplist[x].price <= self.player.money:
+                            self.shopitems.itemconfig(x, {"fg": "#030042"})
+                        else:
+                            self.shopitems.itemconfig(x, {"fg": "#353535"})
                 self.shopitems.bind("<<ListboxSelect>>", self.show_shop_desc)
                 del(self.player.inventory[index])
                 self.playeritems.destroy()
                 self.playeritems = Listbox(self, width=28, height=10, yscrollcommand=self.playersb.set, font="fixedsys")
                 self.playeritems.grid(row=1, column=1, rowspan=3)
                 self.playeritems.bind("<<ListboxSelect>>", self.show_player_desc)
-                for x in self.player.inventory:
-                    self.playeritems.insert(END, x.name)
+                for x in range(0, len(self.player.inventory)):
+                    self.playeritems.insert(END, self.player.inventory[x].name)
+                    if self.player.inventory[x].type == "potion":
+                        self.playeritems.itemconfig(x, {"fg": "#590000"})
+                    elif self.player.inventory[x].type == "weapon":
+                        self.playeritems.itemconfig(x, {"fg": "#030042"})
         self.money_display["text"] = " ¢ " + str(self.player.money) + " "
 
 
