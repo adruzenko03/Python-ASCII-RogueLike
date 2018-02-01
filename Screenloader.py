@@ -8,6 +8,7 @@ from screen_inventory import *
 from screen_shop import *
 from screen_death import *
 
+
 class Put_Everything_Together(object):
     def __init__(self):
         self.root = Tk()
