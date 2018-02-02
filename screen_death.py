@@ -30,7 +30,7 @@ class Deathscreen(Frame):
                text="Exit",
                font=("Fixedsys 16"),
                bg="#8B4513",
-               command = exit
+               command = quit
                ).grid(row=2, column=3, sticky=W)
     def test(self):
         print(" ")

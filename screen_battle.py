@@ -51,8 +51,12 @@ class Battlescreen(Frame):
         self.sb1.grid(row=1, column=1, rowspan=3, sticky=NS)
         self.items = Listbox(self, width=28, height=6, yscrollcommand=self.sb1.set, font="fixedsys")
         self.items.grid(row=1, column=2, columnspan=2, rowspan=3)
-        for x in self.player.inventory:
-            self.items.insert(END, x.name)
+        for x in range(0, len(self.player.inventory)):
+            self.items.insert(END, self.player.inventory[x].name)
+            if self.player.inventory[x].type == "potion":
+                self.items.itemconfig(x, {"fg": "#590000"})
+            elif self.player.inventory[x].type == "weapon":
+                self.items.itemconfig(x, {"fg": "#030042"})
         self.sb1["command"] = self.items.yview
 
         self.combatlog = Text(self, width=28, height=6, font="fixedsys", wrap=WORD)
@@ -107,8 +111,12 @@ class Battlescreen(Frame):
                 self.items.destroy()
                 self.items = Listbox(self, width=28, height=6, yscrollcommand=self.sb1.set, font="fixedsys")
                 self.items.grid(row=1, column=2, columnspan=2, rowspan=3)
-                for x in self.player.inventory:
-                    self.items.insert(END, x.name)
+                for x in range(0, len(self.player.inventory)):
+                    self.items.insert(END, self.player.inventory[x].name)
+                    if self.player.inventory[x].type == "potion":
+                        self.items.itemconfig(x, {"fg": "#590000"})
+                    elif self.player.inventory[x].type == "weapon":
+                        self.items.itemconfig(x, {"fg": "#030042"})
                 self.sb1["command"] = self.items.yview
                 self.playerhp["text"] = str(self.player.hp) + "/" + str(self.pmh)
                 self.enemyattack()

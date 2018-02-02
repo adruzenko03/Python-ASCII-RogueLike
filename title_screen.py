@@ -10,10 +10,10 @@ class TitleScreen(Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        Canvas(self, bg="#cc7130", width=540, height=300, bd=0, highlightthickness=0).grid(row=0, column=0,
+        Canvas(self, bg="#cc7130", width=370, height=300, bd=0, highlightthickness=0).grid(row=0, column=0,
                                                                                            columnspan=6, rowspan=6)
         Label(self,
-               text = "   Title!   ",
+               text = "ruvate.py",
                font = "Fixedsys 60",
                bg = "#cc7130"
                ).grid(row = 0, column = 0)
